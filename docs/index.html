@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Brain Synchronization with the Kuramoto Model</title>
+    <link rel="stylesheet" href="styles.css">
+    <script>
+      window.MathJax = {
+        tex: { inlineMath: [["$", "$"], ["\\(", "\\)"]], displayMath: [["$$", "$$"], ["\\[", "\\]"]] },
+        svg: { fontCache: "global" }
+      };
+    </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  </head>
+  <body>
+    <aside class="sidebar">
+      <div class="brand">
+        <p>Interactive Project Page</p>
+        <h1>Brain Synchronization<br>with Kuramoto Model</h1>
+      </div>
+      <nav aria-label="Sections">
+        <a class="nav-link active" href="#introduction">Introduction</a>
+        <a class="nav-link" href="#kuramoto">Review on Kuramoto Model</a>
+        <a class="nav-link muted" href="#connectome">AAL Connectome</a>
+        <a class="nav-link muted" href="#brain-sync">Brain Network Simulation</a>
+        <a class="nav-link muted" href="#supplement">Supplement</a>
+      </nav>
+    </aside>
+
+    <main class="paper">
+      <section class="hero" id="top">
+        <p class="eyebrow">Complex systems · nonlinear dynamics · brain networks</p>
+        <h2>Modeling Emergent Synchronization in Brain Networks</h2>
+        <p>
+          This page presents an interactive companion to a course project on synchronization,
+          the Kuramoto model, and large-scale brain network dynamics. The first version
+          contains the completed introduction and Kuramoto-model review, together with
+          browser-based simulations adapted from the MATLAB demos.
+        </p>
+      </section>
+
+      <section id="introduction" class="content-section">
+        <h2>Introduction to Synchronization Phenomenon</h2>
+        <p>
+          Synchronization originates from the Greek words <em>syn</em> (together) and
+          <em>chronos</em> (time), describing a universal phenomenon in which interacting
+          oscillators coordinate rhythms to a global frequency and phase. The scientific
+          study of synchronization can be traced back to Huygens' observation of two
+          pendulums coupled through a common support in the 17th century. Since then,
+          synchronization has been identified and modeled through a common framework in
+          physical, chemical, and biological systems.
+        </p>
+        <p>
+          Biological synchronization occurs across scales. Firefly swarms can produce
+          synchronized flash bursts; cardiac tissue contracts through coordinated
+          excitation; neural populations generate coherent electrical rhythms; and
+          molecular circadian clocks such as the KaiABC system can maintain robust
+          biochemical oscillations.
+        </p>
+        <figure>
+          <img src="assets/01_Sync_history.png" alt="Historical and biological examples of synchronization">
+          <figcaption>
+            <strong>Original studies and biological examples of synchronization.</strong>
+            Huygens' coupled-pendulum setup and schematic synchronized flashes in a firefly swarm.
+          </figcaption>
+        </figure>
+        <p>
+          Brain synchronization is especially intriguing because neural systems organize
+          across many spatial and temporal scales. Coordinated activity between neurons
+          and brain regions may support information integration, communication, perception,
+          and attention, while abnormal synchronization is related to disorders such as
+          epilepsy, Parkinson's disease, and schizophrenia. Understanding how collective
+          rhythms emerge from structural brain networks is therefore a central problem in
+          contemporary neuroscience.
+        </p>
+        <p>
+          The Kuramoto model provides a compact phenomenological description of this
+          phenomenon. Oscillators interact through a sinusoidal coupling term and undergo
+          a transition from incoherence to synchronization as the coupling strength passes
+          a critical threshold. In this project, the Kuramoto model is used first as a
+          theoretical null model and then as a starting point for modeling synchronization
+          on realistic brain networks.
+        </p>
+      </section>
+
+      <section id="kuramoto" class="content-section">
+        <h2>Review on Kuramoto Model</h2>
+
+        <h3>Model Establishment</h3>
+        <p>
+          Consider $N$ oscillators with phases
+          $\bm{\theta}=(\theta_1,\theta_2,\cdots,\theta_N)^\top$.
+          Natural oscillators generally have a dispersed intrinsic-frequency distribution
+          $g(\omega)$ near a central frequency $\bar{\omega}$; here we use
+          $\omega_i\overset{\rm i.i.d.}{\sim}\mathcal{N}(\bar{\omega},\sigma^2)$.
+        </p>
+        <p>The general phase dynamics can be written as</p>
+        $$
+        \frac{d\theta_i}{dt}=\omega_i+\frac{K}{N}\sum_{j=1}^N
+        \mathcal{F}(\theta_j-\theta_i),
+        $$
+        <p>
+          where $K$ is the homogeneous coupling strength. Periodicity and exchange
+          asymmetry motivate the sinusoidal approximation
+          $\mathcal{F}(\Delta\theta)\simeq\sin\Delta\theta$, yielding the basic
+          Kuramoto model
+        </p>
+        $$
+        \frac{d\theta_i}{dt}=\omega_i+\frac{K}{N}\sum_{j=1}^N
+        \sin(\theta_j-\theta_i).
+        $$
+
+        <h3>Emergent Synchronization and the Order Parameter</h3>
+        <p>
+          A standard order parameter summarizes the collective phase:
+        </p>
+        $$
+        \tilde{z}(t)=\frac{1}{N}\sum_{j=1}^N e^{i\theta_j(t)}
+        =R(t)e^{i\Theta(t)}.
+        $$
+        <p>
+          The magnitude $R(t)$ measures synchronization. When $R\to 0$, phases are
+          broadly dispersed; when $R\to 1$, oscillators form a coherent synchronized
+          cluster.
+        </p>
+        <figure>
+          <img src="assets/02_order_parameter_schematic.png" alt="Order parameter schematic">
+          <figcaption>
+            <strong>Schematic diagram of the order parameter.</strong>
+            Ten oscillators with $\omega_i\sim\mathcal{N}(1,1/4)$ are simulated at
+            low and high coupling strengths.
+          </figcaption>
+        </figure>
+
+        <h3>Mean-Field Reduction</h3>
+        <p>
+          Under a mean-field approximation, the mutual interaction is replaced by an
+          average interaction $R\sin(\bar{\omega}t-\theta_i)$:
+        </p>
+        $$
+        \frac{d\theta_i}{dt}\simeq \omega_i+KR\sin(\bar{\omega}t-\theta_i).
+        $$
+        <p>
+          In the rotating coordinate $\phi_i=\theta_i-\bar{\omega}t$, this becomes
+        </p>
+        $$
+        \frac{d\phi_i}{dt}=(\omega_i-\bar{\omega})-KR\sin\phi_i
+        :=\nu_i-KR\sin\phi_i.
+        $$
+        <figure>
+          <img src="assets/03_phase_diagram.png" alt="Phase diagram of the mean-field reduced equation">
+          <figcaption>
+            <strong>Phase diagram of the reduced mean-field equation.</strong>
+            Curves are shown for $KR=1$ and $\nu\in[-1.4,+1.4]$.
+          </figcaption>
+        </figure>
+        <p>
+          For $|\nu_i|\le KR$, the reduced equation has a fixed point
+        </p>
+        $$
+        \phi_i^*=\arcsin\frac{\nu_i}{KR}\in
+        \left[-\frac{\pi}{2},+\frac{\pi}{2}\right].
+        $$
+        <p>
+          These locked oscillators contribute coherently to the synchronized group, while
+          oscillators with $|\nu_i|>KR$ drift relative to the mean field.
+        </p>
+
+        <h3>Self-Consistency and Bifurcation</h3>
+        <p>
+          Under the infinite-oscillator limit, a steady distribution concentrated at the
+          locked fixed point gives the self-consistent equation
+        </p>
+        $$
+        R=KR\int_{-1}^{+1}g(\bar{\omega}+KRx)\sqrt{1-x^2}\,dx.
+        $$
+        <p>Equivalently, one can define</p>
+        $$
+        \begin{aligned}
+        \psi(R;K)
+        &=\left\{\sum_{t=0}^{+\infty}
+        \frac{\sqrt{\pi}}{2}
+        \frac{\Gamma(t+\frac{1}{2})}{(t+1)!(2t)!}
+        g^{(2t)}(\bar{\omega})K^{2t+1}R^{2t}\right\}-1\\
+        &\simeq
+        \left(\frac{\pi g(\bar{\omega})}{2}K-1\right)
+        +\frac{\pi g''(\bar{\omega})}{16}K^3R^2+\mathcal{O}(R^4)=0.
+        \end{aligned}
+        $$
+        <p>
+          Since $g''(\bar{\omega})<0$ for a Gaussian peak, a nonzero solution appears
+          when
+        </p>
+        $$
+        K_c=\frac{2}{\pi g(\bar{\omega})},
+        \qquad
+        R^*\sim(K-K_c)^{1/2}.
+        $$
+        <figure>
+          <img src="assets/04_mean_field_bifurcation.png" alt="Kuramoto bifurcation diagram">
+          <figcaption>
+            <strong>Bifurcation diagram of the Kuramoto model.</strong>
+            Panel A shows self-consistency curves below, at, and above $K_c$.
+            Panel B compares mean-field prediction with finite-size simulations.
+          </figcaption>
+        </figure>
+
+        <h3>Interactive Kuramoto Demos</h3>
+        <p>
+          The code fragments below show the essential simulation loop. Switch between
+          MATLAB and Python, then use the two browser demos to explore coupling strength,
+          frequency heterogeneity, finite-size effects, and the order parameter.
+        </p>
+
+        <div class="code-card">
+          <div class="code-tabs" aria-label="Code language tabs">
+            <button class="code-tab active" data-code="matlab">MATLAB</button>
+            <button class="code-tab" data-code="python">Python</button>
+          </div>
+          <pre class="code-block active" data-code-panel="matlab"><code>z = mean(exp(1i * theta));
+R = abs(z);
+Psi = angle(z);
+
+dtheta = omega + K * R * sin(Psi - theta);
+theta = theta + dt * dtheta;</code></pre>
+          <pre class="code-block" data-code-panel="python"><code>z = np.mean(np.exp(1j * theta))
+R = np.abs(z)
+Psi = np.angle(z)
+
+dtheta = omega + K * R * np.sin(Psi - theta)
+theta = theta + dt * dtheta</code></pre>
+        </div>
+
+        <div class="interactive-grid">
+          <article class="demo-card">
+            <div class="demo-header">
+              <h4>Live Kuramoto Lab</h4>
+              <p>Oscillator circle, MF prediction, simulation point, and burst spikes.</p>
+            </div>
+            <div class="controls compact">
+              <label>N <output id="live-n-value">64</output><input id="live-n" type="range" min="16" max="128" step="16" value="64"></label>
+              <label>$\sigma$ <output id="live-sigma-value">0.50</output><input id="live-sigma" type="range" min="0.05" max="0.80" step="0.01" value="0.50"></label>
+              <label>K <output id="live-k-value">1.20</output><input id="live-k" type="range" min="0" max="2.0" step="0.01" value="1.20"></label>
+              <label>speed <output id="live-speed-value">1.0x</output><input id="live-speed" type="range" min="0.2" max="2.4" step="0.1" value="1.0"></label>
+            </div>
+            <div class="button-row">
+              <button id="live-reset">Reset</button>
+              <button id="live-pause">Pause</button>
+              <span>R = <strong id="live-r">0.000</strong></span>
+            </div>
+            <canvas id="phase-canvas" width="520" height="360"></canvas>
+            <canvas id="diagram-canvas" width="520" height="300"></canvas>
+            <canvas id="raster-canvas" width="520" height="220"></canvas>
+          </article>
+
+          <article class="demo-card">
+            <div class="demo-header">
+              <h4>Finite-Size Transition Sweep</h4>
+              <p>Mean-field prediction versus simulations under different N.</p>
+            </div>
+            <div class="controls compact">
+              <label>$\sigma$ <output id="sweep-sigma-value">0.50</output><input id="sweep-sigma" type="range" min="0.10" max="0.80" step="0.05" value="0.50"></label>
+              <label>K max <output id="sweep-kmax-value">2.00</output><input id="sweep-kmax" type="range" min="1.0" max="2.5" step="0.1" value="2.0"></label>
+              <label>points <output id="sweep-points-value">31</output><input id="sweep-points" type="range" min="21" max="51" step="10" value="31"></label>
+            </div>
+            <fieldset class="checks">
+              <legend>N</legend>
+              <label><input class="sweep-n" type="checkbox" value="10" checked>10</label>
+              <label><input class="sweep-n" type="checkbox" value="100" checked>100</label>
+              <label><input class="sweep-n" type="checkbox" value="1000" checked>1000</label>
+              <label><input class="sweep-n" type="checkbox" value="10000">10000</label>
+            </fieldset>
+            <div class="button-row">
+              <button id="run-sweep">Run sweep</button>
+              <button id="cancel-sweep" disabled>Cancel</button>
+              <span id="sweep-status">Ready.</span>
+            </div>
+            <div class="progress"><span id="sweep-progress"></span></div>
+            <canvas id="transition-canvas" width="640" height="460"></canvas>
+          </article>
+        </div>
+      </section>
+
+      <section id="connectome" class="content-section stub">
+        <h2>AAL Connectome</h2>
+        <p>This section will host the structural connectome construction and related supplementary materials.</p>
+      </section>
+      <section id="brain-sync" class="content-section stub">
+        <h2>Brain Network Simulation</h2>
+        <p>This section will host the network Kuramoto simulations and brain synchronization results.</p>
+      </section>
+      <section id="supplement" class="content-section stub">
+        <h2>Supplement</h2>
+        <p>Additional code, slides, and interactive appendices can be added here.</p>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
