@@ -1,360 +1,954 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Brain Synchronization with the Kuramoto Model</title>
-    <link rel="stylesheet" href="styles.css">
-    <script>
-      window.MathJax = {
-        tex: { inlineMath: [["$", "$"], ["\\(", "\\)"]], displayMath: [["$$", "$$"], ["\\[", "\\]"]] },
-        svg: { fontCache: "global" }
-      };
-    </script>
-    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
-  </head>
-  <body>
-    <aside class="sidebar">
-      <div class="brand">
-        <p>Interactive Project Page</p>
-        <h1>Brain Synchronization<br>with Kuramoto Model</h1>
-      </div>
-      <nav aria-label="Sections">
-        <a class="nav-link active" href="#abstract">Abstract</a>
-        <a class="nav-link" href="#introduction">Introduction</a>
-        <a class="nav-link" href="#kuramoto">Kuramoto Review</a>
-        <a class="nav-link" href="#connectome">AAL Connectome</a>
-        <a class="nav-link" href="#brain-sync">Brain Synchronization</a>
-        <a class="nav-link" href="#ad">Alzheimer's Disease</a>
-        <a class="nav-link" href="#circadian">Circadian Clock</a>
-        <a class="nav-link" href="#code">Code</a>
-      </nav>
-    </aside>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Modeling the Emergent Synchronization of Brain Networks with Kuramoto Model</title><link rel="stylesheet" href="styles.css"><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script></head><body><aside class="sidebar"><div class="brand">Kuramoto Brain Sync</div><nav><a class="nav-link level-1" href="#abstract">Abstract</a>
+<a class="nav-link level-1" href="#introduction-to-synchronization-phenomenon">Introduction to Synchronization Phenomenon</a>
+<a class="nav-link level-1" href="#review-of-kuramoto-model-label-sec-kuramoto">Review of Kuramoto Model}\label{sec:kuramoto</a>
+<a class="nav-link level-2" href="#kuramoto-model-setups">Kuramoto Model Setups</a>
+<a class="nav-link level-2" href="#emergent-synchronization-and-mean-field-prediction">Emergent Synchronization and Mean-Field Prediction</a>
+<a class="nav-link level-2" href="#extension-to-heterogeneous-networks-label-subsec-hetero">Extension to Heterogeneous Networks}\label{subsec:hetero</a>
+<a class="nav-link level-1" href="#connection-architecture-based-on-the-aal-atlas-connectome-label-sec-connectome">Connection Architecture Based on the AAL Atlas Connectome}\label{sec:connectome</a>
+<a class="nav-link level-2" href="#biological-definition-of-nodes-and-edges">Biological Definition of Nodes and Edges</a>
+<a class="nav-link level-2" href="#data-cleaning-graph-mapping-and-network-extraction">Data Cleaning, Graph Mapping and Network Extraction</a>
+<a class="nav-link level-2" href="#topological-heterogeneity-and-identification-of-super-hubs">Topological Heterogeneity and Identification of Super Hubs</a>
+<a class="nav-link level-2" href="#dynamical-significance-of-the-architecture">Dynamical Significance of the Architecture</a>
+<a class="nav-link level-1" href="#modeling-the-synchronization-of-brain-networks-label-sec-brain-sync">Modeling the Synchronization of Brain Networks}\label{sec:brain_sync</a>
+<a class="nav-link level-2" href="#hierarchical-kuramoto-dynamical-equation">Hierarchical Kuramoto Dynamical Equation</a>
+<a class="nav-link level-2" href="#initial-conditions-and-synchronization-order-parameters">Initial Conditions and Synchronization Order Parameters</a>
+<a class="nav-link level-2" href="#simulation-results-of-the-normal-brain-model">Simulation Results of the Normal Brain Model</a>
+<a class="nav-link level-2" href="#impact-of-coupling-strength-on-macroscopic-collective-synchronization">Impact of Coupling Strength on Macroscopic Collective Synchronization</a>
+<a class="nav-link level-2" href="#topological-driving-role-of-regional-modules-and-central-hubs">Topological Driving Role of Regional Modules and Central Hubs</a>
+<a class="nav-link level-2" href="#targeted-frequency-perturb-and-whole-brain-entrainment-by-hubs">Targeted Frequency Perturb and Whole-Brain Entrainment by Hubs</a>
+<a class="nav-link level-1" href="#analyzing-the-difference-between-ad-patients-and-healthy-people-in-network-synchronization-label-sec-brain-sync">Analyzing The Difference Between AD Patients and Healthy People In Network Synchronization}\label{sec:brain_sync</a>
+<a class="nav-link level-2" href="#adni-database-and-definition-of-the-pathological-continuum">ADNI Database and Definition of the Pathological Continuum</a>
+<a class="nav-link level-2" href="#extraction-strategy-and-reconstruction-motivation-for-continuous-weighted-matrices">Extraction Strategy and Reconstruction Motivation for Continuous Weighted Matrices</a>
+<a class="nav-link level-2" href="#hidden-evolution-of-the-structural-connectome-and-dynamical-inquiry">Hidden Evolution of the Structural Connectome and Dynamical Inquiry</a>
+<a class="nav-link level-2" href="#topological-lesion-prediction-engine-and-hub-vulnerability-hypothesis">Topological Lesion Prediction Engine and Hub Vulnerability Hypothesis</a>
+<a class="nav-link level-2" href="#macroscopic-synchronization-collapse-and-phase-transition-delay-in-the-disease-continuum">Macroscopic Synchronization Collapse and Phase Transition Delay in the Disease Continuum</a>
+<a class="nav-link level-2" href="#perturb-rescue-causal-validation-of-structural-functional-coupling">Perturb Rescue: Causal Validation of Structural-Functional Coupling</a>
+<a class="nav-link level-1" href="#resynchronization-dynamics-of-circadian-brain-oscillators-label-sec-circadian">Resynchronization Dynamics of Circadian Brain Oscillators}\label{sec:circadian</a>
+<a class="nav-link level-2" href="#forced-kuramoto-description-of-circadian-resynchronization">Forced Kuramoto Description of Circadian Resynchronization</a>
+<a class="nav-link level-2" href="#phase-space-mechanism-of-east-west-asymmetry">Phase-Space Mechanism of East--West Asymmetry</a>
+<a class="nav-link level-2" href="#recovery-time-and-dependence-on-coupling-and-external-drive">Recovery Time and Dependence on Coupling and External Drive</a>
+<a class="nav-link level-2" href="#connection-to-large-scale-brain-synchronization">Connection to Large-Scale Brain Synchronization</a>
+<a class="nav-link level-1" href="#conclusion">Conclusion</a></nav><h3>References</h3><ol class="refs"><li id="ref-huygens1673"><strong>huygens1673</strong>. Huygens, Christiaan. <em>Horologium Oscillatorium</em>. 1673.</li>
+<li id="ref-pikovsky2001"><strong>pikovsky2001</strong>. Pikovsky, Arkady and Rosenblum, Michael and Kurths, J\&quot;urgen. <em>Synchronization: A Universal Concept in Nonlinear Sciences</em>. Cambridge University Press, 2001.</li>
+<li id="ref-strogatz2003"><strong>strogatz2003</strong>. Strogatz, Steven H.. <em>Sync: The Emerging Science of Spontaneous Order</em>. Hyperion, 2003.</li>
+<li id="ref-acebron2005"><strong>acebron2005</strong>. Acebr\&#x27;on, Juan A. and Bonilla, Luis L. and Vicente, Conrad J. P\&#x27;erez and Ritort, Felix and Spigler, Renato. <em>The Kuramoto model: A simple paradigm for synchronization phenomena</em>. Reviews of Modern Physics, 2005.</li>
+<li id="ref-buck1988"><strong>buck1988</strong>. Buck, John. <em>Synchronous fireflies</em>. Scientific American, 1988.</li>
+<li id="ref-strogatz1993"><strong>strogatz1993</strong>. Strogatz, Steven H. and Stewart, Ian. <em>Coupled oscillators and biological synchronization</em>. Scientific American, 1993.</li>
+<li id="ref-glass2001"><strong>glass2001</strong>. Glass, Leon. <em>Synchronization and rhythmic processes in physiology</em>. Nature, 2001.</li>
+<li id="ref-mihalcescu2004"><strong>mihalcescu2004</strong>. Mihalcescu, Ilka and Hsing, Willy and Leibler, Stanislas. <em>Resilient circadian oscillator revealed in individual cyanobacteria</em>. Nature, 2004.</li>
+<li id="ref-nakajima2005"><strong>nakajima2005</strong>. Nakajima, Masahiro and Imai, Kazuki and Ito, Hiroshi and Nishiwaki, Takao and Murayama, Yoshihiko and Iwasaki, Hideo and Oyama, Tokitaka and Kondo, Takao. <em>Reconstitution of circadian oscillation of cyanobacterial KaiC phosphorylation in vitro</em>. Science, 2005.</li>
+<li id="ref-singer1999"><strong>singer1999</strong>. Singer, Wolf. <em>Neuronal synchrony: A versatile code for the definition of relations?</em>. Neuron, 1999.</li>
+<li id="ref-strogatz2000"><strong>strogatz2000</strong>. Strogatz, Steven H.. <em>From Kuramoto to Crawford: Exploring the onset of synchronization in populations of coupled oscillators</em>. Physica D, 2000.</li>
+<li id="ref-varela2001"><strong>varela2001</strong>. Varela, Francisco and Lachaux, Jean-Philippe and Rodriguez, Eugenio and Martinerie, Jacques. <em>The brainweb: Phase synchronization and large-scale integration</em>. Nature Reviews Neuroscience, 2001.</li>
+<li id="ref-engel2001"><strong>engel2001</strong>. Engel, Andreas K. and Fries, Pascal and Singer, Wolf. <em>Dynamic predictions: Oscillations and synchrony in top-down processing</em>. Nature Reviews Neuroscience, 2001.</li>
+<li id="ref-buzsaki2004"><strong>buzsaki2004</strong>. Buzs\&#x27;aki, Gy\&quot;orgy and Draguhn, Andreas. <em>Neuronal oscillations in cortical networks</em>. Science, 2004.</li>
+<li id="ref-fries2005"><strong>fries2005</strong>. Fries, Pascal. <em>A mechanism for cognitive dynamics: Neuronal communication through neuronal coherence</em>. Trends in Cognitive Sciences, 2005.</li>
+<li id="ref-kuramoto1975"><strong>kuramoto1975</strong>. Kuramoto, Yoshiki. <em>Self-entrainment of a population of coupled nonlinear oscillators</em>. International Symposium on Mathematical Problems in Theoretical Physics, 1975.</li>
+<li id="ref-kuramoto1984"><strong>kuramoto1984</strong>. Kuramoto, Yoshiki. <em>Chemical Oscillations, Waves, and Turbulence</em>. Springer, 1984.</li>
+<li id="ref-buzsaki2006"><strong>buzsaki2006</strong>. Buzs\&#x27;aki, Gy\&quot;orgy. <em>Rhythms of the Brain</em>. Oxford University Press, 2006.</li>
+<li id="ref-uhlhaas2006"><strong>uhlhaas2006</strong>. Uhlhaas, Peter J. and Singer, Wolf. <em>Neural synchrony in brain disorders: Relevance for cognitive dysfunctions and pathophysiology</em>. Neuron, 2006.</li>
+<li id="ref-hammond2007"><strong>hammond2007</strong>. Hammond, Constance and Bergman, Hagai and Brown, Peter. <em>Pathological synchronization in Parkinson&#x27;s disease: Networks, models and treatments</em>. Trends in Neurosciences, 2007.</li>
+<li id="ref-arenas2008"><strong>arenas2008</strong>. Arenas, Alex and D\&#x27;iaz-Guilera, Albert and Kurths, J\&quot;urgen and Moreno, Yamir and Zhou, Changsong. <em>Synchronization in complex networks</em>. Physics Reports, 2008.</li>
+<li id="ref-uhlhaas2009"><strong>uhlhaas2009</strong>. Uhlhaas, Peter J. and Singer, Wolf. <em>Neural synchrony in cortical networks: History, concept and current status</em>. Neuron, 2009.</li>
+<li id="ref-schnitzler2005"><strong>schnitzler2005</strong>. Schnitzler, Alfons and Gross, Joachim. <em>Normal and pathological oscillatory communication in the brain</em>. Nature Reviews Neuroscience, 2005.</li>
+<li id="ref-dorfler2014"><strong>dorfler2014</strong>. D\&quot;orfler, Florian and Bullo, Francesco. <em>Synchronization in complex oscillator networks and smart grids</em>. Automatica, 2014.</li>
+<li id="ref-rodrigues2016"><strong>rodrigues2016</strong>. Rodrigues, Francisco A. and Peron, Thomas K. D. M. and Ji, Peng and Kurths, J\&quot;urgen. <em>The Kuramoto model in complex networks</em>. Physics Reports, 2016.</li>
+<li id="ref-cabral2011"><strong>cabral2011</strong>. Cabral, Joana and Hugues, Etienne and Sporns, Olaf and Deco, Gustavo. <em>Role of local network oscillations in resting-state functional connectivity</em>. NeuroImage, 2011.</li>
+<li id="ref-cabral2014"><strong>cabral2014</strong>. Cabral, Joana and Kringelbach, Morten L. and Deco, Gustavo. <em>Exploring mechanisms of spontaneous functional connectivity in MEG: How delayed network interactions lead to structured amplitude envelopes of band-pass filtered oscillations</em>. NeuroImage, 2014.</li>
+<li id="ref-deco2011"><strong>deco2011</strong>. Deco, Gustavo and Jirsa, Viktor K. and McIntosh, Anthony R.. <em>Emerging concepts for the dynamical organization of resting-state activity in the brain</em>. Nature Reviews Neuroscience, 2011.</li>
+<li id="ref-deco2017"><strong>deco2017</strong>. Deco, Gustavo and Kringelbach, Morten L. and Jirsa, Viktor K. and Ritter, Petra. <em>The dynamics of resting fluctuations in the brain: Metastability and its dynamical cortical core</em>. Scientific Reports, 2017.</li>
+<li id="ref-han2023determining"><strong>han2023determining</strong>. Han, Xu and Zhang, Dongliang and Hong, Lu and Yu, Daqi and Wu, Zhaolong and Yang, Tian and Rust, Michael and Tu, Yuhai and Ouyang, Qi. <em>Determining subunit-subunit interaction from statistics of cryo-EM images: observation of nearest-neighbor coupling in a circadian clock protein complex</em>. Nature Communications, 2023.</li>
+<li id="ref-fries2015"><strong>fries2015</strong>. Fries, Pascal. <em>Rhythms for cognition: Communication through coherence</em>. Neuron, 2015.</li>
+<li id="ref-siegel2012"><strong>siegel2012</strong>. Siegel, Markus and Donner, Tobias H. and Engel, Andreas K.. <em>Spectral fingerprints of large-scale neuronal interactions</em>. Nature Reviews Neuroscience, 2012.</li>
+<li id="ref-breakspear2017"><strong>breakspear2017</strong>. Breakspear, Michael. <em>Dynamic models of large-scale brain activity</em>. Nature Neuroscience, 2017.</li>
+<li id="ref-shine2019"><strong>shine2019</strong>. Shine, James M.. <em>Human cognition involves the dynamic integration of neural activity and neuromodulatory systems</em>. Nature Neuroscience, 2019.</li>
+<li id="ref-sarfati2022chimera"><strong>sarfati2022chimera</strong>. Sarfati, Rapha\&quot;el and Peleg, Orit. <em>Chimera states among synchronous fireflies</em>. Science Advances, 2022.</li>
+<li id="ref-yeung1999"><strong>yeung1999</strong>. Yeung, M. K. S. and Strogatz, Steven H.. <em>Time delay in the Kuramoto model of coupled oscillators</em>. Physical Review Letters, 1999.</li>
+<li id="ref-Heuvel2012"><strong>Heuvel2012</strong>. Van den Heuvel, Martijn P and Kahn, René S and Goñi, Joaquín and Sporns, Olaf. <em>High-cost, high-capacity backbone for global brain communication</em>. Proceedings of the National Academy of Sciences, 2012.</li>
+<li id="ref-Schmidt2015"><strong>Schmidt2015</strong>. Schmidt, Robert and LaFleur, Kevin JR and de Reus, Martijn A and others. <em>Kuramoto model simulation of neural hubs and dynamic synchrony in the human cerebral connectome</em>. BMC Neuroscience, 2015.</li>
+<li id="ref-Varela2001"><strong>Varela2001</strong>. Varela, Francisco and Lachaux, Jean-Philippe and Rodriguez, Eugenio and Martinerie, Jacques. <em>The brainweb: Phase synchronization and large-scale integration</em>. Nature Reviews Neuroscience, 2001.</li>
+<li id="ref-Lachaux1999"><strong>Lachaux1999</strong>. Lachaux, Jean-Philippe and Rodriguez, Eugenio and Martinerie, Jacques and Varela, Francisco J. <em>Measuring phase synchrony in brain signals</em>. Human Brain Mapping, 1999.</li>
+<li id="ref-Skoch2022"><strong>Skoch2022</strong>. Škoch, Antonín and Rehák Bučková, Barbora and Mareš, Jan and others. <em>Human brain structural connectivity matrices–ready for modelling</em>. Scientific Data, 2022.</li>
+<li id="ref-Alderson2018"><strong>Alderson2018</strong>. Alderson, Thomas H and Bokde, Arun LW and Kelso, J A Scott and Maguire, Liam and Coyle, Damien and Alzheimer&#x27;s Disease Neuroimaging Initiative. <em>Metastable neural dynamics in Alzheimer&#x27;s disease are disrupted by lesions to the structural connectome</em>. NeuroImage, 2018.</li>
+<li id="ref-Lu2016JetLag"><strong>Lu2016JetLag</strong>. Lu, Zhixin and Klein-Carde\~na, Kevin and Lee, Steven and Antonsen, Thomas M. and Girvan, Michelle and Ott, Edward. <em>Resynchronization of circadian oscillators and the east-west asymmetry of jet-lag</em>. Chaos, 2016.</li></ol></aside><main><header class="hero"><h1>Modeling the Emergent Synchronization of Brain Networks with Kuramoto Model</h1><p>Final project for MMLS 2026 spring, PKU, taught by Prof. Tao and Prof. Champer.</p><div class="hero-grid"><figure><img src="assets/01_Sync_history.png" alt="Synchronization history"><figcaption>Historical and biological examples of synchronization.</figcaption></figure><figure><img src="assets/06_aal_connectome_construction.png" alt="AAL connectome"><figcaption>AAL-90 empirical connectome construction and hub identification.</figcaption></figure></div></header><article><section id="abstract" class="paper-section"><h2>Abstract</h2>
+<p>Synchronization is a universal phenomenon observed in systems ranging from firefly swarms to circadian clocks and neuronal populations. In the brain, synchronized neural activity plays a crucial role in information processing, cognition, and behavior, while abnormal synchronization is associated with neurological disorders. Here, we investigate the emergence of large-scale brain synchronization using the Kuramoto model on a structural connectome derived from the Automated Anatomical Labeling (AAL) atlas.Based on it,we construct a dynamical model and reproduce the collective synchronization , demonstrating that the phenomenon is strictly governed by the coupling  parameter. Building on this physical baseline, we systematically investigate the topological drivers of the system, revealing the disproportionate role of network hubs in facilitating global phase transitions and evaluating the network's dynamical vulnerability to localized structural perturbations. We further extend this framework to circadian resynchronization, using a forced Kuramoto model to illustrate how coupled neural oscillators recover coherence after abrupt time-zone phase shifts. Finally, we translate these theoretical insights into a clinical context by comparing empirical connectome data from Alzheimer's disease patients and healthy controls elucidating the clinical significance of disrupted synchronization dynamics.</p>
+<p><strong>Keywords:</strong> <em>Synchronization; Kuramoto model; Brain networks; AAL atlas</em></p>
+<section id="introduction-to-synchronization-phenomenon" class="paper-section"><h2>Introduction to Synchronization Phenomenon</h2>
+<p>Synchronization originates from the Greek words <em>syn</em> (together) and <em>chronos</em> (time), describing a set of universal phenomenon that interacting oscillators tend to coordinate rhythms to a global frequency and phase. The scientific study of synchronization can be traced back to the observation and study of the mechanical synchronization of two pendulums coupled with a common support by Huygens in the 17th century <a class="cite" href="#ref-huygens1673" title="Huygens, Christiaan (1673). Horologium Oscillatorium. ">[huygens1673]</a>. Since then, synchronization has been  modeled through a uniform framework in physical, chemical, and biological systems <a class="cite" href="#ref-pikovsky2001" title="Pikovsky, Arkady and Rosenblum, Michael and Kurths, J&quot;urgen (2001). Synchronization: A Universal Concept in Nonlinear Sciences. Cambridge University Press">[pikovsky2001]</a> <a class="cite" href="#ref-strogatz2003" title="Strogatz, Steven H. (2003). Sync: The Emerging Science of Spontaneous Order. Hyperion">[strogatz2003]</a> <a class="cite" href="#ref-acebron2005" title="Acebr&#x27;on, Juan A. and Bonilla, Luis L. and Vicente, Conrad J. P&#x27;erez and Ritort, Felix and Spigler, Renato (2005). The Kuramoto model: A simple paradigm for synchronization phenomena. Reviews of Modern Physics">[acebron2005]</a>.</p>
+<p>Biological synchronization occurs at living systems across different scales. In population scale, a swarm of fireflies can form synchronized burst flash <a class="cite" href="#ref-buck1988" title="Buck, John (1988). Synchronous fireflies. Scientific American">[buck1988]</a> <a class="cite" href="#ref-strogatz1993" title="Strogatz, Steven H. and Stewart, Ian (1993). Coupled oscillators and biological synchronization. Scientific American">[strogatz1993]</a> <a class="cite" href="#ref-sarfati2022chimera" title="Sarfati, Rapha&quot;el and Peleg, Orit (2022). Chimera states among synchronous fireflies. Science Advances">[sarfati2022chimera]</a>. In organism and tissue scale, synchronization is essential for the coordinated contraction of cardiac tissue and the generation of coherent neural activity in the brain <a class="cite" href="#ref-glass2001" title="Glass, Leon (2001). Synchronization and rhythmic processes in physiology. Nature">[glass2001]</a> <a class="cite" href="#ref-buzsaki2006" title="Buzs&#x27;aki, Gy&quot;orgy (2006). Rhythms of the Brain. Oxford University Press">[buzsaki2006]</a>. At the molecular level, proteins involved in circadian clocks can maintain highly synchronized biochemical oscillations. A well-known example is the KaiABC system in cyanobacteria, which produces robust 24-hour rhythms through collective molecular interactions <a class="cite" href="#ref-nakajima2005" title="Nakajima, Masahiro and Imai, Kazuki and Ito, Hiroshi and Nishiwaki, Takao and Murayama, Yoshihiko and Iwasaki, Hideo and Oyama, Tokitaka and Kondo, Takao (2005). Reconstitution of circadian oscillation of cyanobacterial KaiC phosphorylation in vitro. Science">[nakajima2005]</a> <a class="cite" href="#ref-han2023determining" title="Han, Xu and Zhang, Dongliang and Hong, Lu and Yu, Daqi and Wu, Zhaolong and Yang, Tian and Rust, Michael and Tu, Yuhai and Ouyang, Qi (2023). Determining subunit-subunit interaction from statistics of cryo-EM images: observation of nearest-neighbor coupling in a circadian clock protein complex. Nature Communications">[han2023determining]</a>.</p>
+<figure><img src="assets/01_Sync_history.png" alt="Figure"><figcaption>\textbf{Original studies of synchronization phenomenon: (A)</figcaption></figure>
+<p>Among these phenomena, brain synchronization is particularly intriguing because of the complexity across spatiotemporal scales of brain networks. Neural synchronization arises from interactions among neurons and brain regions connected through anatomical networks <a class="cite" href="#ref-varela2001" title="Varela, Francisco and Lachaux, Jean-Philippe and Rodriguez, Eugenio and Martinerie, Jacques (2001). The brainweb: Phase synchronization and large-scale integration. Nature Reviews Neuroscience">[varela2001]</a> <a class="cite" href="#ref-buzsaki2004" title="Buzs&#x27;aki, Gy&quot;orgy and Draguhn, Andreas (2004). Neuronal oscillations in cortical networks. Science">[buzsaki2004]</a>. Such coordinated activity may play a key role in information integration, communication between brain regions, perception, and attention <a class="cite" href="#ref-fries2015" title="Fries, Pascal (2015). Rhythms for cognition: Communication through coherence. Neuron">[fries2015]</a> <a class="cite" href="#ref-deco2011" title="Deco, Gustavo and Jirsa, Viktor K. and McIntosh, Anthony R. (2011). Emerging concepts for the dynamical organization of resting-state activity in the brain. Nature Reviews Neuroscience">[deco2011]</a>, while disruptions of synchronization may lead to neurological disorders including epilepsy, Parkinson’s disease, and schizophrenia <a class="cite" href="#ref-uhlhaas2006" title="Uhlhaas, Peter J. and Singer, Wolf (2006). Neural synchrony in brain disorders: Relevance for cognitive dysfunctions and pathophysiology. Neuron">[uhlhaas2006]</a> <a class="cite" href="#ref-hammond2007" title="Hammond, Constance and Bergman, Hagai and Brown, Peter (2007). Pathological synchronization in Parkinson&#x27;s disease: Networks, models and treatments. Trends in Neurosciences">[hammond2007]</a>. Understanding how large-scale synchronization emerges from structural brain networks therefore remains a central challenge in contemporary neuroscience.</p>
+<p>From a systematic perspective, synchronization across systems may share common principles governing their collective behavior. Motivated by this universality, Kuramoto proposed a simple phenomenological model, where oscillators are coupled with others through a simple sinusoidal interaction <a class="cite" href="#ref-kuramoto1975" title="Kuramoto, Yoshiki (1975). Self-entrainment of a population of coupled nonlinear oscillators. International Symposium on Mathematical Problems in Theoretical Physics">[kuramoto1975]</a> <a class="cite" href="#ref-kuramoto1984" title="Kuramoto, Yoshiki (1984). Chemical Oscillations, Waves, and Turbulence. Springer">[kuramoto1984]</a>. Despite its minimal formulation, the model successfully captures the collective transition from incoherent dynamics to a synchronized state as the coupling strength exceeds a critical threshold <a class="cite" href="#ref-strogatz2000" title="Strogatz, Steven H. (2000). From Kuramoto to Crawford: Exploring the onset of synchronization in populations of coupled oscillators. Physica D">[strogatz2000]</a> <a class="cite" href="#ref-acebron2005" title="Acebr&#x27;on, Juan A. and Bonilla, Luis L. and Vicente, Conrad J. P&#x27;erez and Ritort, Felix and Spigler, Renato (2005). The Kuramoto model: A simple paradigm for synchronization phenomena. Reviews of Modern Physics">[acebron2005]</a>. Furthermore, Kuramoto model serves as a null model and could be extended given connection network topologies, heterogeneous interactions, time delays, stochastic fluctuations, etc. <a class="cite" href="#ref-arenas2008" title="Arenas, Alex and D&#x27;iaz-Guilera, Albert and Kurths, J&quot;urgen and Moreno, Yamir and Zhou, Changsong (2008). Synchronization in complex networks. Physics Reports">[arenas2008]</a> <a class="cite" href="#ref-dorfler2014" title="D&quot;orfler, Florian and Bullo, Francesco (2014). Synchronization in complex oscillator networks and smart grids. Automatica">[dorfler2014]</a> <a class="cite" href="#ref-rodrigues2016" title="Rodrigues, Francisco A. and Peron, Thomas K. D. M. and Ji, Peng and Kurths, J&quot;urgen (2016). The Kuramoto model in complex networks. Physics Reports">[rodrigues2016]</a>.</p>
+<p>In this work, we adopt the Kuramoto model to investigate synchronization in a realistic brain network. We first review the basic theory of the Kuramoto model and its major extensions (Sec. <span class="xref">sec:kuramoto</span>). We then construct a weighted structural connectome using data from the Automated Anatomical Labeling (AAL) atlas (Sec. <span class="xref">sec:connectome</span>). Then, numerical simulations are performed to explore how coupling strength, intrinsic frequency heterogeneity, network topology, disease and circadian clock influence the emergence of large-scale synchronization in the brain (Sec. <span class="xref">sec:brain_sync</span>$\sim$<span class="xref">sec:circadian</span>).</p>
+<section id="review-of-kuramoto-model-label-sec-kuramoto" class="paper-section"><h2>Review of Kuramoto Model}\label{sec:kuramoto</h2>
+<h3 id="kuramoto-model-setups">Kuramoto Model Setups</h3>
+<p>To characterize the collective behavior of a group of $N$ oscillators, we define the joint angular position of them $\bm{\theta}=(\theta_1,\theta_2,\cdots,\theta_N)^\top$ as the state variable of the system.</p>
+<p>Unlike man-made clocks with ignorable frequency difference, the intrinsic frequency of natural oscillator exhibits may get dispersed distribution $g(\omega)$ near the central frequency $\bar{\omega}$. Here, we take a simple Gaussian distribution $\omega_i\overset{\rm i.i.d.}{\sim}\mathcal{N}(\bar{\omega},\sigma^2)$.</p>
+<p>The general kinetic equation describing the phase change of each oscillator coupled with all other oscillators is expressed as</p>
+<div class="equation">\[\frac{d\theta_i}{dt}=\omega_i+\frac{K}{N}\sum_{j=1}^N\mathcal{F}(\theta_j-\theta_i),\]</div>
+<p>where $K$ is the homogeneous coupling strength between pair of oscillators.</p>
+<p>The coupling interaction $\mathcal{F}(\cdot)$ features two basic properties: (i) phasic periodic boundary condition $\mathcal{F}(\Delta\theta+2\pi) \equiv \mathcal{F}(\Delta\theta)$; (ii) phasic exchange asymmetry $\mathcal{F}(-\Delta\theta)=-\mathcal{F}(\Delta\theta)$. Given the Fourier theorem, the fundamental component of $\mathcal{F}(\cdot)$ is adopted, i.e.,</p>
+<div class="equation">\[\mathcal{F}(\Delta\theta)=\sum_{k=1}^{+\infty} a_k\sin k(\Delta\theta)\simeq \sin\Delta\theta.\]</div>
+<p>Then, we get the basic Kuramoto model <a class="cite" href="#ref-kuramoto1975" title="Kuramoto, Yoshiki (1975). Self-entrainment of a population of coupled nonlinear oscillators. International Symposium on Mathematical Problems in Theoretical Physics">[kuramoto1975]</a></p>
+<div class="equation">\[\frac{d\theta_i}{dt}=\omega_i+\frac{K}{N}\sum_{j=1}^N\sin(\theta_j-\theta_i)\ .\]</div>
+<h3 id="emergent-synchronization-and-mean-field-prediction">Emergent Synchronization and Mean-Field Prediction</h3>
+<p>Taking two-oscillator simplified model, suppose that they could get synchronization driven by $\mathcal{F}(\cdot)$, then at steady state $\dot{\theta}_1^{\rm st}=\dot{\theta}^{\rm st}_2=(\omega_1+\omega_2)t/2$, and we get</p>
+<div class="equation">\[\omega_2-\omega_1=K\sin(\omega_2-\omega_1)\leq K,\]</div>
+<p>meaning that the coupling strength $K$ has a lower boundary, under which the system could not maintain synchronization.</p>
+<p>For $N$ oscillators, we first introduce an order parameter to characterize the collective synchronization level</p>
+<div class="equation">\[\label{eq:order}
+<p>\tilde{z}(t)=\frac{1}{N}\sum_{j=1}^N\mathrm{e}^{\mathrm{i}\theta_k}=R(t)\mathrm{e}^{\mathrm{i}\Theta(t)},\]</div></p>
+<p>which, as shown in Fig. <span class="xref">fig:order</span>, describes the average phase of oscillators. The norm $R(t)$ describes the real-time synchronization level. For $R\rightarrow +1$, then oscillators get tight synchronization, while for $R\rightarrow 0$, the system is completely out of synchronization.</p>
+<figure><img src="assets/02_order_parameter_schematic.png" alt="Figure"><figcaption>\textbf{Schematic diagram of order parameter:</figcaption></figure>
+<p>Suppose that all oscillators get synchronization, then at steady state, we have $\tilde{z}(t)\rightarrow R\mathrm{e}^{\mathrm{i}\bar{\omega}t}$. However, it is still difficult to analyze the behavior of $N$ ODEs. Therefore, we adopt a mean-field assumption that the mutual interaction $\sin(\theta_j-\theta_i)$ could be replaced by the average interaction $R\sin(\bar{\omega}t-\theta)$, yielding a greatly simplified 1-dimensional dynamic equation</p>
+<div class="equation">\[\frac{d\theta_i}{dt}\simeq \omega_i+KR\sin(\bar{\omega}t-\theta_i).\]</div>
+<p>Changing the coordinates $\phi_i:=\theta_i-\bar{\omega}t$ to get the automatical equation</p>
+<div class="equation">\[\frac{d\phi_i}{dt}=(\omega_i-\bar{\omega}) -KR\sin\phi_i:=\nu_i-KR\sin\phi_i .\]</div>
+<figure><img src="assets/03_phase_diagram.png" alt="Figure"><figcaption>\textbf{Phase diagram of the simplified dynamic equation adopting the mean-field approximation:</figcaption></figure>
+<p>For those oscillators with $|\nu_i|\leq KR$, the dynamic equation has fixed point</p>
+<div class="equation">\[\phi^*_i(|\nu_i|\leq KR)=\arcsin \frac{\nu_i}{KR}\in \left[-\frac{\pi}{2},+\frac{\pi}{2}\right],\]</div>
+<p>showing that these oscillators could get synchronization; while for those oscillators with $|\nu|_i>KR$, they could not join the synchronization group.</p>
+<p>Under the infinite oscillator limit, the system can be defined by probability distribution of oscillators $P(\phi,\nu,t)$ in phase space, and the corresponding Fokker-Planck equation is</p>
+<div class="equation">\[\frac{\partial P(\phi,\nu,t)}{\partial t}=-\frac{\partial}{\partial\phi}[\left(\nu-KR\sin\phi\right)P(\phi,\mu,t)].\]</div>
+<p>At steady state, the time-averaged contribution of out-synchronized oscillators to the distribution measures zero. They chase the group and surpass them at each round and hence the flux is approximately zero. In that case, the steady state distribution</p>
+<div class="equation">\[\label{eq:distribution}
+<p>P^{\rm st}(\phi,\nu)=\updelta [\phi-\phi^*(\nu)]=\updelta \left(\phi-\arcsin\frac{\nu}{KR}\right) .\]</div></p>
+<p>Noting that the mean-field approximation is not an expansion of small values and may lead to observable deviation, we have to testify whether the order parameter $\tilde{z}^{\rm st}=R\mathrm{e}^{\mathrm{i}\bar{\omega}t}$ could be achieved based on the distribution (<span class="xref">eq:distribution</span>) derived from the mean-field approximation, which gives</p>
+<div class="equation">\[R\mathrm{e}^{\mathrm{i}\bar{\omega}t}=\int g(\nu +\bar{\omega})d\nu\int _{-\pi/2}^{+\pi/2}P^{\rm st}(\phi ,\nu)\mathrm{e}^{\mathrm{i}(\phi +\bar{\omega}t)} d\phi .\]</div>
+<p>Plugging the steady distribution and noting that the imaginary part of LHS and RHS can be eliminated, we get the self-consistent equation</p>
+<div class="equation">\[R= KR\int_{-1}^{+1}g(\bar{\omega}+KRx)\sqrt{1-x^2}dx.\]</div>
+<p>Expanding the PDF $g(\omega)$, we get</p>
+<div class="equation">\[\begin{aligned}
+<p>\psi (R;K)&=\left\{\sum_{t=0}^{+\infty}\frac{\sqrt{\pi}}{2}\frac{\Gamma(t+\frac{1}{2})}{(t+1)!(2t)!}g^{(2t)}(\bar{\omega}) K^{2t+1}R^{2t}\right\}-1\\</p>
+<p>&\simeq  \left(\frac{\pi g(\bar{\omega})}{2}K-1\right)+\frac{\pi g"(\bar{\omega})}{16}K^3R^2+\mathcal{O}(K^5R^{4})\\</p>
+<p>& =0.</p>
+<p>\end{aligned}\]</div></p>
+<p>Noting that $g"(\bar{\omega})<0$, as $K$ grows larger, solution $R^*(K)$ to the equation $\psi (K;R)=0$ occurs at a saddle-node bifurcation point</p>
+<div class="equation">\[K_c=\frac{2}{\pi g(\bar{\omega})},\]</div>
+<p>near which the relation between $R^*$ and $K$ follows a scaling law</p>
+<div class="equation">\[R^* \sim (K-K_c)^{1/2}.\]</div>
+<figure><img src="assets/04_mean_field_bifurcation.png" alt="Figure"><figcaption>\textbf{Bifurcation diagram of the Kuramoto model: (A)</figcaption></figure>
+<h3 id="extension-to-heterogeneous-networks-label-subsec-hetero">Extension to Heterogeneous Networks}\label{subsec:hetero</h3>
+<p>The Kuramoto model successfully capture the key feature of synchronization phenomenon, i.e., the emergence of collective behavior, with minimum parameters and setups. To match biological data and characterize more intriguing properties related to the synchronization, the Kuramoto model can be extended to heterogeneous networks. Given that natural complex networks normally feature high heterogeneity, the Kuramoto model can be written as</p>
+<div class="equation">\[\frac{d\theta_i}{dt}=\omega_i+\frac{1}{N}\sum_{j=1}^NK_{ij}\sin (\theta_j-\theta_i),\]</div>
+<p>where the connection adjacency matrix $\mathbf{K}=(K_{ij})$ encodes the coupling architecture between oscillators.</p>
+<p>Different network architectures can strongly shape the route toward synchronization by changing how phase information propagates across the system. To illustrate how network topology affects the synchronization transition, we compare three representative coupling structures under the standard Kuramoto model:</p>
+<ul><li><strong>Global coupling:</strong> fully connected network where each oscillator interacts with all others, representing an idealized mean-field upper bound. In the simulation, the network contains \(N=100\) oscillators and has average degree \(\langle k\rangle=99\).</li><li><strong>Erdős--Rényi (ER) random graph:</strong> random network where connections are formed independently, serving as a homogeneous sparse-network baseline. In the simulation, the connection probability is set to \(p=0.10\), giving an average degree \(\langle k\rangle=(N-1)p\approx10\).</li><li><strong>Barabási--Albert (BA) scale-free network:</strong> heterogeneous network generated through preferential attachment, capturing the hub-dominated organization commonly observed in complex systems. In simulation, we set \(m=5\), giving an average degree \(\langle k\rangle=2m=10\).</li></ul>
+<p>The ER and BA networks are controlled to have approximately the same average degree, while the global coupling network serves as the fully connected reference. This design allows a fair comparison between random and scale-free topologies under identical connection density, so that the observed differences mainly arise from network architecture rather than the total number of connections.</p>
+<figure><img src="assets/05_network_topology_transition.png" alt="Figure"><figcaption>\textbf{Synchronization transition on different network topologies.</figcaption></figure>
+<p>As shown in Fig. <span class="xref">fig:kc_comparison</span>, the three networks display distinct synchronization transitions. Global coupling synchronizes most easily with \(K_c=0.40\), because every oscillator directly senses the mean field of the entire population. The BA scale-free network achieves global synchronization at \(K_c=2.00\), notably lower than the ER random network with \(K_c=2.60\), despite both having the same average degree. The ER random graph requires the strongest coupling to synchronize, reflecting the absence of efficient information relay structures. The lower \(K_c\) of the BA network demonstrates that network heterogeneity, specifically the presence of hub nodes, promotes global synchronization. Hub nodes, once locked to the mean field, can efficiently recruit their many neighbors into the synchronized cluster. This result provides insight into why real brain networks, which exhibit hub-like and modular properties, may support rapid functional integration.</p>
+<p>Noise can also be incorporated to describe fluctuation in biological systems. In this case, the general heterogeneous Kuramoto model becomes</p>
+<div class="equation">\[\frac{d\theta_i(t)}{dt}
+<p>=</p>
+<p>\omega_i</p>
+<p>+</p>
+<p>\frac{1}{N}\sum_{j=1}^{N}K_{ij}\sin(\theta_j-\theta_i)</p>
+<p>+</p>
+<p>\zeta_i(t),\]</div></p>
+<p>where \(\zeta_i(t)\) denotes stochastic perturbation applied to oscillator \(i\).</p>
+<section id="connection-architecture-based-on-the-aal-atlas-connectome-label-sec-connectome" class="paper-section"><h2>Connection Architecture Based on the AAL Atlas Connectome}\label{sec:connectome</h2>
+<h3 id="biological-definition-of-nodes-and-edges">Biological Definition of Nodes and Edges</h3>
+<p>To authentically simulate the collective dynamical behavior of the brain at a macroscopic scale, we employed an empirical network architecture based on real human anatomical data. The spatial topological foundation of our model utilizes the Automated Anatomical Labeling (AAL-90) atlas, partitioning the cerebral cortex into $N = 90$ macroscopic brain regions <a class="cite" href="#ref-Heuvel2012" title="Van den Heuvel, Martijn P and Kahn, René S and Goñi, Joaquín and Sporns, Olaf (2012). High-cost, high-capacity backbone for global brain communication. Proceedings of the National Academy of Sciences">[Heuvel2012]</a> <a class="cite" href="#ref-Skoch2022" title="Škoch, Antonín and Rehák Bučková, Barbora and Mareš, Jan and others (2022). Human brain structural connectivity matrices–ready for modelling. Scientific Data">[Skoch2022]</a>. In the dynamical model, each brain region is abstracted as an oscillator with an intrinsic rhythm.</p>
+<h3 id="data-cleaning-graph-mapping-and-network-extraction">Data Cleaning, Graph Mapping and Network Extraction</h3>
+<p>To construct a high-fidelity physical backbone for the Kuramoto model simulation, we subjected the raw structural connectivity matrices from multiple subjects to a series of rigorous mathematical cleaning and group-level reconstruction procedures.</p>
+<p>Upon importing the multi-subject tensor data (<code>num\_subjects</code> $\times 90 \times 90$), we first applied physical constraints to the matrices at the individual level:</p>
+<ul><li><strong>Absolute Symmetrization:</strong> Based on the physical assumption that brain structural connectivity forms an undirected graph, we forced the matrices to be diagonally symmetric, i.e. $\mathbf{M} = (\mathbf{M} + \mathbf{M}^\top)/2$), to ensure balanced coupling interactions.</li><li><strong>Self-Connection Removal:</strong> The diagonal elements of the matrices $M_{ii}$ were strictly set to zero, eliminating the interference of intra-regional self-feedback loops.</li></ul>
+<p>Considering anatomical variations across individuals, our  study adopted a consensus thresholding strategy:</p>
+<ul><li><strong>Individual Binarization:</strong> The connection weights for all subjects were first binarized, retaining only topological existence (1 for presence, 0 for absence).</li><li>\textbf{40\</li></ul>
+<p>The result is showed in Fig. <span class="xref">fig:aal_network</span></p>
+<figure><img src="assets/06_aal_connectome_construction.png" alt="Figure"><figcaption>\textbf{Construction of the empirical brain network based on the AAL-90 atlas: (A)</figcaption></figure>
+<h3 id="topological-heterogeneity-and-identification-of-super-hubs">Topological Heterogeneity and Identification of Super Hubs</h3>
+<p>Based on the extracted group consensus network, we further quantified the topological heterogeneity of the architecture. Our computational logic utilized Node Degree—the number of valid edges directly connected to a given brain region as it is the most intuitive metric with the clearest physical significance.</p>
+<ul><li><strong>85th Percentile Cutoff Rule:</strong> To precisely target core regions for subsequent "localized perturbation and rescue" experiments, we calculated the degree distribution across all 90 nodes and adopted the 85th percentile as a rigorous cutoff threshold.</li><li><strong>Super Hubs:</strong> The minority of brain regions with degrees greater than or equal to this threshold were strictly defined as "super hubs". Forming the information convergence centers of the brain network,</li></ul>
+<h3 id="dynamical-significance-of-the-architecture">Dynamical Significance of the Architecture</h3>
+<p>Through the rigorous pipeline described above, we obtained a highly refined brain adjacency matrix $\mathbf{M}_{\rm group}$ with distinct topological features. In the following experiments, this matrix is directly injected into the  Kuramoto differential equations as a spatial constraint term.</p>
+<section id="modeling-the-synchronization-of-brain-networks-label-sec-brain-sync" class="paper-section"><h2>Modeling the Synchronization of Brain Networks}\label{sec:brain_sync</h2>
+<h3 id="hierarchical-kuramoto-dynamical-equation">Hierarchical Kuramoto Dynamical Equation</h3>
+<p>We modeled the 90 macroscopic brain regions in the brain network as a set of coupled phase oscillators <a class="cite" href="#ref-Varela2001" title="Varela, Francisco and Lachaux, Jean-Philippe and Rodriguez, Eugenio and Martinerie, Jacques (2001). The brainweb: Phase synchronization and large-scale integration. Nature Reviews Neuroscience">[Varela2001]</a> <a class="cite" href="#ref-Schmidt2015" title="Schmidt, Robert and LaFleur, Kevin JR and de Reus, Martijn A and others (2015). Kuramoto model simulation of neural hubs and dynamic synchrony in the human cerebral connectome. BMC Neuroscience">[Schmidt2015]</a>. The temporal evolution of the system is governed by the following nonlinear stochastic differential equation (SDE):</p>
+<div class="equation">\[d\theta_i = \omega_i dt + \lambda \sum_{j=1}^{N} M_{ij} \sin(\theta_j - \theta_i) dt + \sigma dW_i\]</div>
+<p>where $\theta_i(t)$ represents the instantaneous phase of the $i$-th brain region at time $t$. The right-hand side of the equation consists of three components:</p>
+<ul><li><strong>Intrinsic Frequency:</strong> $\omega_i$ is independently sampled from a Gaussian distribution $\mathcal{N}(0, 0.5^2)$ with a mean of 0 and a standard deviation of 0.5, reflecting the heterogeneity of working rhythms across different brain modules.</li><li><strong>Deterministic Drift:</strong> $\lambda$ denotes the global coupling strength. The network topological matrix $M_{ij}$ serves as the spatial constraint.</li><li><strong>Stochastic Diffusion:</strong> $\sigma$ is the noise intensity set to $\sigma = 0.2$, and $dW_i$ denotes the standard Wiener process. This term simulates the biochemical noise of synaptic transmission and background thermal fluctuations faced by the brain during spontaneous activity.</li></ul>
+<h3 id="initial-conditions-and-synchronization-order-parameters">Initial Conditions and Synchronization Order Parameters</h3>
+<p>To assess the system's dynamic integration capacity from disorder to order, the initial phases $\theta_i(0)$ of all nodes were uniformly and randomly initialized within the interval $[0, 2\pi]$, representing that the system initially resides in a completely chaotic, desynchronized state.</p>
+<p>This study utilizes two order parameters, $R$ and $R_{\rm link}$, to characterize global dynamic coherence  <a class="cite" href="#ref-Lachaux1999" title="Lachaux, Jean-Philippe and Rodriguez, Eugenio and Martinerie, Jacques and Varela, Francisco J (1999). Measuring phase synchrony in brain signals. Human Brain Mapping">[Lachaux1999]</a>. The first order parameter $R$, representing mean phase coherence, is defined based on the complex number $\tilde{z}(t)$ by Eq.(<span class="xref">eq:order</span>). The variable $R(t)$ serves as a measure of the degree of phase synchronization among the population of $N$ oscillators, and $\Theta(t)$ is the average combined phase of all oscillators. By averaging $R(t)$ over time, we obtain the first order parameter $R$.</p>
+<p>The second order parameter, $R_{\rm link}$ (mean edge synchronization), provides additional insights into the network state. The edge synchronization $C_{ij}$ between nodes $i$ and $j$ is defined as:</p>
+<div class="equation">\[C_{ij} = \cos(\theta_i(t) - \theta_j(t)).\]</div>
+<p>These values collectively constitute the simulated functional connectivity matrix $\mathbf{C}$. By integrating the average edge synchronization levels, $R_{\rm link}$ is formulated as:</p>
+<div class="equation">\[R_{\rm link} = \frac{\sum_{i,j} M_{ij} C_{ij}}{\sum_{i,j} M_{ij}}\]</div>
+<p>The system of differential equations was numerically solved using a Runge--Kutta solver.</p>
+<h3 id="simulation-results-of-the-normal-brain-model">Simulation Results of the Normal Brain Model</h3>
+<p>After injecting the empirical AAL-90 network $\mathbf{M}_{\rm group}$ into the aforementioned SDE engine, we recorded the temporal evolution trajectory of the macroscopic order parameter $R(t)$ for the intact network. As illustrated in Fig. <span class="xref">fig:simulation_results</span>, despite significant differences in intrinsic frequencies among various brain regions and continuous disruptive interference from high-intensity white noise ($\sigma = 0.2$), brain networks with larger coupling strengths are still able to overcome this resistance. This drives the entire brain to rapidly ascend from its initial disordered state and ultimately stabilize in a highly synchronized dynamical regime (near $R \to 1$). Only when the coupling strength is relatively small does the whole-brain state fail to achieve collective synchronization.</p>
+<figure><img src="assets/07_macroscopic_synchronization_dynamics.png" alt="Figure"><figcaption>\textbf{Simulation results of the macroscopic synchronization dynamics:</figcaption></figure>
+<h3 id="impact-of-coupling-strength-on-macroscopic-collective-synchronization">Impact of Coupling Strength on Macroscopic Collective Synchronization</h3>
+<p>Having verified the capacity of the healthy brain architecture to achieve collective synchronization, we systematically investigates the dependence of global dynamics of the <strong>cortical coupling factor</strong> $\lambda$. Through extensive parameter sweeping $\lambda \in [0, 0.05]$, we fully characterize the phase transition of the system from chaotic disorder to a highly synchronized state. We calculated three core metrics after the system reached a steady state (discarding the initial relaxation time) for each: global order parameter $R$, synchronized edge fraction $R_{\rm link}$ as mentioned before and macroscopic fluctuation $\sigma_r$ defined as the standard deviation of the global order parameter $R(t)$ over time.</p>
+<p>The simulation results clearly demonstrate the second-order phase transition characteristics of the Kuramoto oscillators on the empirical brain topology. As the coupling strength $\lambda$ gradually increases, the system's evolution can be strictly divided into three dynamic regimes ,as shown in Fig. <span class="xref">fig:figure3_overall</span>.</p>
+<figure><img src="assets/08_lambda_dependent_synchronization_states.png" alt="Figure"><figcaption>\textbf{Synchronization States Influenced by</figcaption></figure>
+<ul><li><strong>Sub-critical state (low $\lambda$):</strong> Weak coupling between nodes fails to overcome intrinsic frequency heterogeneity and environmental noise . Both $r$ and $r_{link}$ remain at extremely low levels, indicating a chaotic state.</li><li><strong>Critical regime ($\lambda \in [0.015, 0.030]$):</strong> As the coupling strength crosses the critical threshold, synchronization exhibits a nonlinear burst, with both $r$ and $r_{link}$ curves climbing sharply. Notably, the system's macroscopic fluctuation reaches its peak within this interval. Such critical fluctuation indicates high dynamic instability, where brain regions undergo intense physical tug-of-war between synchronization and desynchronization,a hallmark of the real brain maintaining optimal flexibility for information processing.</li><li><strong>Super-critical state (high $\lambda$):</strong> With further increases in $\lambda$, the network completely overcomes noise and frequency heterogeneity. The $r_{link}$ metric saturates first, and $r$ asymptotically approaches 1, plunging the entire brain into a rigid, absolute synchronized state.</li></ul>
+<p>To visually depict the spatial organization rules during the phase transition, we extracted snapshots of the FC matrices across these three typical states (Fig. <span class="xref">fig:figure3_overall</span>B ). In the sub-critical state ($\lambda = 0.010$), the FC matrix primarily exhibits sparse and scattered local high-PLV clusters, corresponding to a few "modular" subnetworks with the tightest anatomical connections. In the critical state ($\lambda \approx 0.0225$), synchronization begins to propagate along the brain's core topological backbone, forming meso-scale synchronized clusters that span multiple modules. In the super-critical state ($\lambda = 0.035$), the FC matrix transitions to a globally homogeneous highly-connected state, signifying the complete integration of whole-brain information flow.</p>
+<p>This parameter sweeping simulation confirms that macroscopic synchronization in the brain is strictly governed by the underlying effective coupling strength.</p>
+<h3 id="topological-driving-role-of-regional-modules-and-central-hubs">Topological Driving Role of Regional Modules and Central Hubs</h3>
+<p>In brain networks, macroscopic collective synchronization is not an instantaneous global mutation, but a process of gradual integration from local to global scales, heavily relying on the underlying anatomical architecture. To unveil the dynamic organizational principles at this meso-scale, wen delves into the specific roles of regional anatomical modules and central hubs during the phase transition.</p>
+<p><strong>Meso-scale modular partition and hub definition:</strong> Based on the spatial and functional attributes of the AAL-90 atlas, we partitioned the brain network into five classical macroscopic anatomical modules: Frontal (28 nodes), Limbic & Subcortical (22 nodes), Occipital (14 nodes), Parietal (14 nodes), and Temporal (12 nodes). Simultaneously, utilizing the extracted group consensus network matrix $\mathbf{M}_{\rm group}$, we calculated the effective degree of each node and explicitly designated the <strong>top 10 nodes</strong> with the highest connectivity as the "central hubs" of the network. In the real brain, these hubs typically bear extremely high metabolic costs for cross-modular information routing.</p>
+<p>We computed the evolutionary trajectories of the local order parameter $r_{mod}$ within the five anatomical modules as a function of the global coupling strength $\lambda$ (as shown in Fig. <span class="xref">fig:mesoscale_hubs</span>A). The simulation indicates that different brain modules exhibit highly heterogeneous phase transition characteristics when subjected to identical environmental noise ($\sigma=0.2$). Due to varying degrees of topological density within each module, the critical thresholds for local synchronization display a distinct step-like distribution. Modules with the tightest internal structural connections can overcome noise at lower $\lambda$ values, initially forming locally coherent sub-networks. This phenomenon dynamically confirms the "high modularity" feature of cortical connections: the network inevitably achieves functional segregation and primary synchronization within local regions before accomplishing integration at the whole-brain scale.</p>
+<figure><img src="assets/09_modules_and_hubs_synchronization.png" alt="Figure"><figcaption>\textbf{ Mesoscale synchronization dynamics of regional anatomical modules and hubs: (A)</figcaption></figure>
+<p><strong>Core driving of central hubs and "rich-club" dynamics:</strong> To clarify the physical status of central hubs in the global phase transition, we intuitively compared the synchronization rate of the sub-network formed by the top 10 hub nodes ($r_{hub}$, red line) with those of the regular modules (gray lines) and the global synchronization rate ($r_{global}$, black dashed line) (Fig.<span class="xref">fig:mesoscale_hubs</span> b). The results reveal a profound dynamical rule: the synchronization phase transition of central hubs occurs significantly earlier and is far more robust than in any other region of the brain.</p>
+<p>In the transition zone between sub-critical and critical states ($\lambda \in [0.015, 0.025]$), while the vast majority of regular modules are still struggling in a chaotic or semi-synchronized state, the top 10 hub nodes have already rapidly phase-locked, achieving a high degree of internal synchronization. This phenomenon is known in network science as "rich-club dynamics." These highly connected hubs are not only densely interconnected but also act as extremely stable dynamical cores, exerting an "anchoring" effect near the critical point. It is precisely under the strong mediation of these 10 super hubs that isolated local modules can bridge anatomical physical distances and ultimately be integrated into the macroscopic synchronization rhythm of the whole brain.</p>
+<p>This insight not only explains the high information transmission efficiency of the healthy brain but also implies from a reverse perspective: should these 10 central hubs suffer targeted attacks or pathological damage, the entire macroscopic dynamics of the brain would lose its load-bearing wall, facing a catastrophic synchronization collapse.</p>
+<h3 id="targeted-frequency-perturb-and-whole-brain-entrainment-by-hubs">Targeted Frequency Perturb and Whole-Brain Entrainment by Hubs</h3>
+<p>Following the revelation of the core status of hub nodes in steady-state synchronization, this section further explores their causal efficacy in driving whole-brain rhythm reorganization through "non-equilibrium" targeted frequency perturbation experiments.</p>
+<p><strong>Frequency tracking and targeted perturbation design:</strong> We exposed the empirical brain network $\mathbf{M}_{\rm group}$ to focal dynamical perturbations. In the Kuramoto SDE engine, we artificially injected a significant frequency offset ($\Delta \omega = +4.0$) into the intrinsic frequencies of a specific targeted group of nodes, simulating high-frequency neuromodulation or pathological discharges. The intrinsic frequencies of the remaining nodes maintained their original Gaussian distribution. To systematically evaluate the impact of topological status on frequency entrainment capacity, we tracked the effective frequency evolution of the whole brain under varying coupling strengths $\lambda$ across three parallel groups: (1) <em>Hub Nodes:</em> Targeting the top 10 core nodes. (2) <em>Random Nodes:</em> Targeting 10 randomly selected peripheral nodes as a topological control. (3) <em>Frontal Module:</em> Targeting the entire frontal module (comprising 28 nodes) to strictly contrast the efficacy of node "mass" versus "topology."</p>
+<p><strong>Topological leverage and robust entrainment of hub nodes:</strong> The simulation results (Fig. <span class="xref">fig:kc_comparison</span>) vividly reveal the profound constraint of network structure on dynamical propagation. In the <strong>hub nodes perturbed group</strong> (Fig. <span class="xref">fig:frequency_perturbation</span>A), the thick red high-frequency curve of the hubs and the frequency curves of the other four normal modules rapidly converge at a remarkably low critical coupling strength ($\lambda \approx 0.05$). This implies that the central hubs, despite accounting for only 11\</p>
+<p>Inefficacy of random nodes and limitations of regional modules: In stark contrast, the random nodes perturbed group (Fig. <span class="xref">fig:frequency_perturbation</span>B)demonstrates that local stimulation of non-core nodes struggles to trigger global state transitions. Due to their location at the topological periphery, the entire brain only reluctantly converges at a significantly higher coupling threshold ($\lambda \approx 0.07$).</p>
+<p>Even more striking are the counterintuitive results from the frontal module perturbed group (Fig. <span class="xref">fig:frequency_perturbation</span>C). Because the frontal module contains massive target nodes (28 nodes, nearly three times that of the hub group), its significant intrinsic "mass" successfully pulls the final synchronized frequency of the whole brain to a much higher level ($\sim 1.25$). However, lacking global topological centrality, the critical coupling strength required to entrain this whole-brain convergence ($\lambda \approx 0.06$) still lags behind that of the mere 10 hub nodes.</p>
+<figure><img src="assets/10_focal_perturbation_frequency_entrainment.png" alt="Figure"><figcaption>\textbf{Whole-brain frequency entrainment under focal dynamical perturbations. An artificial high-frequency offset was injected into different target groups:</figcaption></figure>
+<p>Physically, this precise comparison yields a highly clinically valuable thesis for neuromodulation. In complex brain networks, node "mass" (affected volume) may dictate the final synchronized frequency state, but network "topology" (hub centrality) dictates the absolute efficiency (the $\lambda$ threshold) of driving the entire network into that synchronized state.</p>
+<section id="analyzing-the-difference-between-ad-patients-and-healthy-people-in-network-synchronization-label-sec-brain-sync" class="paper-section"><h2>Analyzing The Difference Between AD Patients and Healthy People In Network Synchronization}\label{sec:brain_sync</h2>
+<p>After delving into the topological dynamics mechanisms and entrainment laws of the healthy brain, we transitions the research from theoretical physics models to a clinical empirical context. To investigate the substantial disruption of whole-brain synchronization dynamics caused by neurodegenerative diseases, we introduced real clinical patient data and constructed physical brain networks spanning the core stages of disease progression <a class="cite" href="#ref-Alderson2018" title="Alderson, Thomas H and Bokde, Arun LW and Kelso, J A Scott and Maguire, Liam and Coyle, Damien and Alzheimer&#x27;s Disease Neuroimaging Initiative (2018). Metastable neural dynamics in Alzheimer&#x27;s disease are disrupted by lesions to the structural connectome. NeuroImage">[Alderson2018]</a>.</p>
+<h3 id="adni-database-and-definition-of-the-pathological-continuum">ADNI Database and Definition of the Pathological Continuum</h3>
+<p>The data used in this study were all sourced from the internationally authoritative Alzheimer's Disease Neuroimaging Initiative (ADNI) database. We rigorously screened and extracted four subject cohorts with explicit clinical diagnoses:</p>
+<ul><li><strong>CN (Cognitively Normal):</strong> The cognitively normal control group, representing the baseline brain architecture of healthy aging.</li><li><strong>EMCI (Early Mild Cognitive Impairment):</strong> Early mild cognitive impairment, representing the initial, latent stage of pathological network degeneration.</li><li><strong>LMCI (Late Mild Cognitive Impairment):</strong> Late mild cognitive impairment, a critical clinical transitional period between early damage and full-blown dementia.</li><li><strong>AD (Alzheimer's Disease):</strong> The confirmed Alzheimer's disease group, representing the terminal stage where severe organic lesions occur in the network topology.</li></ul>
+<h3 id="extraction-strategy-and-reconstruction-motivation-for-continuous-weighted-matrices">Extraction Strategy and Reconstruction Motivation for Continuous Weighted Matrices</h3>
+<p>It is worth noting that in the first stage of constructing the healthy brain baseline model, we adopted a "40\</p>
+<p>This methodological shift is based on profound pathological and dynamical considerations: neurodegenerative lesions (such as white matter tract demyelination or synaptic apoptosis) represent a continuous physical decline. Connections between brain regions typically weaken gradually rather than severing instantaneously. Continuing to apply a crude binary threshold would easily obliterate the subtle yet crucial changes in connection gradients. Furthermore, performing comparative analyses across different populations necessitates the introduction of normalization. Therefore, we performed the following continuous weighting procedures on the ADNI cohorts:</p>
+<ul><li><strong>Logarithmic domain mapping and amplification:</strong> A smooth logarithmic transformation ($\log(1+x)$) was applied to the raw connection weights. This nonlinear transformation suppresses the dominant effects of extreme high values in major neural tracts while significantly amplifying the subtle secondary connection variations in the early stages of the disease.</li><li><strong>Undirected graph symmetrization and group averaging:</strong> Matrices were forced to be diagonally symmetric to comply with physical assumptions, and the weighted group-average matrix for each clinical cohort was subsequently calculated.</li><li><strong>Global normalization:</strong> The continuous weights were globally mapped to the $[0, 1]$ interval, and self-feedback connections were strictly removed, maximally preserving the true physical connection strength gradients.</li></ul>
+<h3 id="hidden-evolution-of-the-structural-connectome-and-dynamical-inquiry">Hidden Evolution of the Structural Connectome and Dynamical Inquiry</h3>
+<p>The extracted and cleaned group-average network matrices (as shown in Fig<span class="xref">fig:adni_connectomes</span>) present a somewhat counterintuitive phenomenon: judging solely from the visual heatmaps of the continuous weighted matrices, the horizontal progression from the CN group to the AD group does not exhibit drastic or precipitous topological ruptures. The physical brain networks across the four cohorts largely maintain a high degree of similarity in their overall topological backbone, with only subtle gradient attenuations and redistributions occurring in certain local connection weights.</p>
+<p>This visually "non-significant" static difference, on one hand, reflects the profound structural resilience of the human brain. On the other hand, considering the severe cognitive deterioration observed clinically in these patients, it strongly implies that relying solely on static structural connectivity comparisons is insufficient to uncover the deep pathological mechanisms of Alzheimer's disease. In highly complex, nonlinear neural dynamical systems, even minute weakenings in the underlying connection strengths can cross a critical threshold, triggering a "butterfly effect" that results in immense macroscopic state shifts.</p>
+<p>This hidden degradation of static structures compels us to upgrade our analytical dimension from "static topology" to "dynamical evolution." This naturally leads to the ultimate clinical inquiry of our study.</p>
+<figure><img src="assets/11_ad_connectome_evolution.png" alt="Figure"><figcaption>\textbf{Evolution of structural connectomes across the Alzheimer's disease continuum:</figcaption></figure>
+<h3 id="topological-lesion-prediction-engine-and-hub-vulnerability-hypothesis">Topological Lesion Prediction Engine and Hub Vulnerability Hypothesis</h3>
+<p>After clarifying the hidden evolutionary patterns of structural connections within the AD continuum, a critical theoretical neuroscience question remains to be answered: does the topological status of specific brain regions determine their vulnerability during future disease progression? To test, we constructed a topological lesion prediction engine spanning three disease stages (EMCI, LMCI, AD) and performed regression analyses against four graph-theoretical metrics representing nodal topological status.</p>
+<p><strong>Underlying quantification of structural lesion indices and topological features:</strong> We subtracted the group-average matrices of the three disease stages (EMCI, LMCI, AD) from the healthy control group (CN) to obtain difference matrices, calculating the total loss of edge weights for each node. Subsequently, this was uniformly divided by the "absolute maximum connection loss" observed across the entire disease continuum. This rigorous normalization (Normalized Lesion Count) ensures that the extent of damage across different disease stages is strictly comparable under the same physical dimension. Simultaneously, we extracted four core baseline topological features from the healthy network backbone of the CN group: <strong>Eigenvector Centrality</strong> (assessing global nodal importance), <strong>Clustering Coefficient</strong> (quantifying local segregation capacity), <strong>Local Efficiency</strong> (measuring the robustness of information transfer), and <strong>Participation Coefficient</strong> (calculated after delineating multi-quadrant communities based on Graph Laplacian eigenvectors).</p>
+<figure><img src="assets/12_topological_lesion_regression.png" alt="Figure"><figcaption>\textbf{Multi-track regression analysis of baseline topological metrics and normalized lesion counts across the Alzheimer's disease (AD) continuum: (A, B, D)</figcaption></figure>
+<p><strong>Multi-track regression analysis and the "Hub Vulnerability Hypothesis":</strong> We utilized the four baseline topological metrics as independent variables and the normalized lesion counts of each disease stage as dependent variables, executing three parallel Ordinary Least Squares (OLS) linear regressions and F-tests (as shown in Fig. <span class="xref">fig:simulation_results</span>). The results reveal a remarkably brutal pathological rule: metrics representing global hubs and dense interconnectivity (Fig. <span class="xref">fig:hub_vulnerability_regression</span>A, B, D) all exhibit significant positive slopes. This implies that <strong>super-hubs with more central topological status and higher participation in the healthy brain surprisingly suffer more severe physical structural damage during disease evolution.</strong> This phenomenon perfectly corroborates the "Hub Vulnerability Hypothesis" of AD. Because these core nodes bear the brain's largest information throughput and metabolic load, they become "epicenters" for the cross-modular propagation of pathological toxic proteins (such as Amyloid-$\beta$ and Tau). Conversely, nodes with higher local efficiency (Fig. <span class="xref">fig:hub_vulnerability_regression</span>C) exhibit a negative correlation, indicating that small-world architectures with high local redundancy can, to some extent, resist global network avalanches.</p>
+<p><strong>Step-wise exacerbation of the pathological cascade and dynamical collapse:</strong> The regression lines perfectly differentiate the step-wise hierarchy of disease progression. As the disease deteriorates from EMCI (blue line) and LMCI (yellow line) to the terminal AD stage (red line), the intercepts of the regression lines are substantially elevated, the slopes become increasingly steeper, and statistical significance erupts across the board (e.g., $F=45.0, p=2.32 \times 10^{-9}$ for the clustering coefficient in the AD stage). This "hidden to explosive" temporal evolution demonstrates that, as the pathological cascade intensifies, the collapse of whole-brain structure constitutes a precise "targeted attack" on core hubs. This empirical finding forms an astonishing theoretical closed-loop with our previous dynamical simulations: it is precisely because those super-hubs---which ought to "entrain whole-brain synchronization"---suffer the most severe degenerative damage in the disease, that the brain loses the physical load-bearing walls for macroscopic dynamical phase-locking, ultimately leading to total cognitive collapse.</p>
+<h3 id="macroscopic-synchronization-collapse-and-phase-transition-delay-in-the-disease-continuum">Macroscopic Synchronization Collapse and Phase Transition Delay in the Disease Continuum</h3>
+<p>We further evaluate their catastrophic consequences at the functional level. By injecting the empirical structural matrices of the four clinical cohorts into the  Kuramoto oscillator network as spatial constraints, we directly measure the destructive impact of pathological topology on macroscopic collective synchronization capabilities.</p>
+<p><strong>Subtle yet robust step-wise delay in dynamic phase transitions:</strong> By continuously tuning the global cortical coupling strength ($\lambda \in [0, 0.05]$), we fully tracked the phase transition of the brain from chaotic disorder to global synchronization ($R \to 1$). As depicted in Fig. <span class="xref">fig:kuramoto_adni_sync</span>, although the phase transition curves of the four disease stages appear visually proximate, they exhibit a strict, stable, and consistent rightward shift across the entire disease continuum. We also conducted comprehensive trials incorporating varied random seeds, different noise parameters, and diverse initial state conditions. The CN and EMCI networks consistently maintain a leading position during the phase transition, whereas the terminal AD network demonstrates a small but exceptionally robust dynamical lag throughout the entire critical evolution regime.</p>
+<p><strong>Substantial elevation of the critical coupling threshold ($\lambda_c$):</strong> In physics, this stable rightward shift is equivalent to a substantial elevation in the critical coupling threshold required to achieve macroscopic phase-locking. Within the critical phase transition regime ($\lambda \in [0.015, 0.030]$), while the absolute numerical differences among CN, EMCI, and LMCI are relatively marginal, the AD group systematically and significantly deviates downward from the healthy baseline. This implies that the AD network demands a higher coupling strength to reach the same level of global coherence as the healthy brain. Such a phenomenon indicates that a persistent "synchronization resistance" accumulates within the pathological network, rendering the transition toward an ordered state increasingly difficult.</p>
+<p><strong>Deep physical mechanisms of structure-function decoupling:</strong> This subtle yet robust dynamical lag forms a perfect theoretical closed-loop with the "hub vulnerability hypothesis" revealed previously. In the brain, super-hubs originally serve as "pacemakers" responsible for lowering the energy barrier for global synchronization; it is precisely because they suffer exceptionally severe targeted degenerative damage that the network completely loses its high-speed information routing capability. To compensate for the absence , the surviving  brain regions are forced to demand disproportionately high effective coupling strengths. However, constrained by realistic physiological limits, the brains of AD patients are unable to provide this excessive compensatory coupling, which inevitably drives the cortical rhythm to slip into an irreversible desynchronized state, directly inducing significant clinical phenotypes.</p>
+<figure><img src="assets/13_ad_phase_transition_delay.png" alt="Figure"><figcaption>\textbf{Global synchrony progression and phase transition delay across the Alzheimer's disease (AD) continuum:</figcaption></figure>
+<h3 id="perturb-rescue-causal-validation-of-structural-functional-coupling">Perturb Rescue: Causal Validation of Structural-Functional Coupling</h3>
+<p>Whether a definitive causal relationship exists between AD’s dynamical manifestations and the impairment of central hubs remains to be verified. To address this, we employed an "In silico Perturbation-Rescue" framework to validate whether there is a deterministic causal law between impaired structural connectivity and the observed dynamical lag—specifically, whether precisely repairing specific topological nodes can fully reverse the system's dynamical collapse.</p>
+<p><strong>Causal perturbation framework under controlled variables:</strong> Using the AD empirical network as a pathological baseline, we constructed two virtual intervention models:</p>
+<ul><li><strong>Targeted Rescue</strong>: utilizing CN network weights to replace the top 10\</li><li><strong>Random Rescue</strong>: randomly selecting an equivalent number of nodes for weight replacement. To ensure that dynamical differences originated solely from fine-tuning the network topology, we maintained unified initial frequency distributions, initial phases, and noise paths across all experimental groups.</li></ul>
+<p><strong>Subtle dynamical response under causal validation:</strong> Simulation results (as shown in Fig. <span class="xref">fig:rescue_experiment</span>) reveal that the sensitivity of the dynamical system to local topological perturbations is limited. Within a broad range of coupling strengths, the Targeted Rescue group exhibits a trajectory slightly shifted toward the healthy state compared to the AD baseline and the Random Rescue group, with the Targeted Rescue group showing a marginally greater magnitude of improvement. Although this improvement is subtle, it consistently emerges across multiple repetitions.</p>
+<p><strong>Preliminary conclusion and limitations:</strong> By comparing the differences between Targeted Rescue and Random Rescue, we have demonstrated a certain causal association within structural-functional coupling. However, given that these differences are not exceptionally substantial, this conclusion remains preliminary. Future studies may further validate these findings by expanding the sample size and optimizing the computational processes.</p>
+<figure><img src="assets/14_perturbation_rescue_experiment.png" alt="Figure"><figcaption>\textbf{In silico perturbation-rescue experiment: dynamical responses to targeted versus random topological interventions:</figcaption></figure>
+<section id="resynchronization-dynamics-of-circadian-brain-oscillators-label-sec-circadian" class="paper-section"><h2>Resynchronization Dynamics of Circadian Brain Oscillators}\label{sec:circadian</h2>
+<p>In previous sections, we focused on how structural brain networks support or disrupt</p>
+<p>large-scale synchronization, especially in the context of Alzheimer's disease. However, brain</p>
+<p>synchronization is not only a static ability to reach a coherent state, but also a dynamic</p>
+<p>capacity to recover coherence after external perturbations. This motivates us to further</p>
+<p>examine a related problem: how a population of biological oscillators resynchronizes after a</p>
+<p>sudden phase shift.</p>
+<p>A representative biological example is the circadian rhythm regulated by the suprachiasmatic</p>
+<p>nucleus (SCN). The SCN consists of a large population of pacemaker neurons whose collective</p>
+<p>phase determines the internal circadian time of the organism. After rapid travel across time zones,</p>
+<p>the external light-dark cycle changes abruptly, while the internal circadian oscillator cannot</p>
+<p>instantly adapt to the new environmental phase. The recovery process from jet-lag can</p>
+<p>therefore be interpreted as a resynchronization process of coupled neural oscillators under</p>
+<p>external forcing.</p>
+<p>Here, we analyze the model proposed by Lu <em>et al.</em> <a class="cite" href="#ref-Lu2016JetLag" title="Lu, Zhixin and Klein-Carde\ na, Kevin and Lee, Steven and Antonsen, Thomas M. and Girvan, Michelle and Ott, Edward (2016). Resynchronization of circadian oscillators and the east-west asymmetry of jet-lag. Chaos">[Lu2016JetLag]</a></p>
+<p>as an additional case study of brain-network synchronization. Compared with the anatomical</p>
+<p>AAL-90 model used above, the SCN model is more phenomenological and low-dimensional.</p>
+<p>Nevertheless, it provides a clear dynamical picture of how neural oscillators recover from</p>
+<p>phase perturbations and complements our previous analysis of synchronization collapse and</p>
+<p>rescue in pathological brain networks.</p>
+<h3 id="forced-kuramoto-description-of-circadian-resynchronization">Forced Kuramoto Description of Circadian Resynchronization</h3>
+<p>We describe the SCN as a population of globally coupled phase oscillators subjected to periodic external forcing. The phase dynamics of the oscillator  $i$ is</p>
+<div class="equation">\[\frac{d\theta_i}{dt}
+<p>=</p>
+<p>\omega_i</p>
+<p>+</p>
+<p>\frac{K}{N}\sum_{j=1}^{N}\sin(\theta_j-\theta_i)</p>
+<p>+</p>
+<p>F\sin(\sigma t-\theta_i+p(t)),\]</div></p>
+<p>where $\theta_i$ denotes the phase of the $i$-th SCN neuron, $\omega_i$ is its intrinsic frequency, $K$ is the coupling strength among the SCN oscillators, and $F$ is the strength of the external drive during the day. The driving frequency is fixed as $</p>
+<p>\sigma = \frac{2\pi}{24}\ \mathrm{h}^{-1}.</p>
+<p>$</p>
+<p>The parameter $p(t)$ represents the phase of the local time zone. Rapid travel across time zones is modeled as an instantaneous phase shift,</p>
+<div class="equation">\[p(t)=
+<p>\begin{cases}</p>
+<p>p_1, & t\leq s,\\</p>
+<p>p_2, & t>s,</p>
+<p>\end{cases}\]</div></p>
+<p>where $s$ is the travel time. The phase difference $\Delta p = p_1-p_2$ determines the direction and magnitude of the travel. Here, $\Delta p>0$ corresponds to the westward travel, while $\Delta p<0$ corresponds to the eastward travel.</p>
+<p>As in the previous sections, collective synchronization is characterized by a complex order parameter. In a frame rotating with an external 24-hour drive, it is defined as</p>
+<div class="equation">\[\tilde{z}(t)
+<p>=</p>
+<p>\frac{1}{N}</p>
+<p>\sum_{j=1}^{N}</p>
+<p>e^{i[\theta_j(t)-\sigma t-p_2]}.\]</div></p>
+<p>The modulus $|\tilde{z}|$ measures the coherence of the SCN oscillator population. A large value of $|\tilde{z}|$ indicates strong internal synchronization, while the phase of $\tilde{z}$ describes the alignment between the internal circadian rhythm and the external light-dark cycle.</p>
+<p>Assuming a Lorentzian distribution of intrinsic frequencies,</p>
+<div class="equation">\[g(\omega)
+<p>=</p>
+<p>\frac{\Delta}{\pi[(\omega-\omega_0)^2+\Delta^2]},\]</div></p>
+<p>the Ott--Antonsen reduction gives a closed low-dimensional equation for the macroscopic order parameter:</p>
+<div class="equation">\[\dot{\tilde{z}}
+<p>=</p>
+<p>\frac{1}{2}</p>
+<p>\left[</p>
+<p>(K\tilde{z}+F)-\tilde{z}^2(K\bar{\tilde{z}}+F)</p>
+<p>\right]</p>
+<p>-</p>
+<p>(\Delta+i\Omega)\tilde{z},\]</div></p>
+<p>where</p>
+<div class="equation">\[\Omega=\sigma-\omega_0.\]</div>
+<p>This reduction is important because it connects the microscopic Kuramoto description of many SCN neurons to a simple macroscopic phase-space picture. In this sense, the model plays a similar role to our large-scale brain network simulations: both describe how heterogeneous neural oscillators form, lose, and recover collective synchronization.</p>
+<h3 id="phase-space-mechanism-of-east-west-asymmetry">Phase-Space Mechanism of East--West Asymmetry</h3>
+<p>After the trip, the circadian state does not start from the attractor of the new time zone. Instead, if the system was entrained before the trip, the initial condition in the new rotating frame becomes</p>
+<div class="equation">\[\tilde{z}(s)=\tilde{z}_{\mathrm{st}}e^{i\Delta p},\]</div>
+<p>where $\tilde{z}_{\mathrm{st}}$ is the stable entrained state in the destination time zone. The resynchronization is then represented by the trajectory of $\tilde{z}(t)$ returning to $\tilde{z}_{\mathrm{st}}$.</p>
+<p>The phase portrait of the reduced system explains why eastward and westward travel can have different recovery times. Depending on the parameters $K$, $F$, $\Delta$, and $\Omega$, the macroscopic dynamics may contain only one stable fixed point, or may additionally contain a saddle point and an unstable fixed point. When a saddle exists, its stable manifold separates trajectories that return to entrainment through different directions in phase space. As a result, two trips with similar time-zone changes may show very different recovery routes and recovery times.</p>
+<figure><img src="assets/15_circadian_phase_space_dynamics.png" alt="Figure"><figcaption>\textbf{Phase-space dynamics of the reduced forced Kuramoto model for circadian oscillators:</figcaption></figure>
+<p>This mechanism gives a dynamical explanation for the well-known east--west asymmetry of jet lag. Westward travel usually corresponds to a phase delay and often follows a relatively direct recovery path. Eastward travel requires phase advance, which can be dynamically more difficult. For sufficiently large eastward shifts, the system may even recover through the opposite direction in phase space, leading to a much longer transient. Thus, the asymmetry is not merely a behavioral phenomenon, but emerges naturally from the nonlinear geometry of the synchronized oscillator state.</p>
+<h3 id="recovery-time-and-dependence-on-coupling-and-external-drive">Recovery Time and Dependence on Coupling and External Drive</h3>
+<p>To quantify recovery, we define the distance from the entrained state as</p>
+<div class="equation">\[d(t)=|\tilde{z}(t)-\tilde{z}_{\mathrm{st}}|.\]</div>
+<p>The system is considered resynchronized when $d(t)$ falls below a small threshold. Using biologically motivated parameters, the model predicts that recovery is generally faster after westward travel than after eastward travel. The longest recovery time appears near large eastward shifts, where the initial condition lies close to the separatrix associated with the saddle point.</p>
+<figure><img src="assets/16_circadian_recovery_trajectories.png" alt="Figure"><figcaption>\textbf{Recovery trajectories after eastward and westward time-zone shifts:</figcaption></figure>
+<p>The model also clarifies how physiological and environmental parameters affect resynchronization. Increasing external forcing strength $F$ accelerates recovery, consistent with the empirical observation that strong light exposure helps reduce jet lag. Increasing internal coupling strength $K$ improves coherence among SCN oscillators, but can also reshape the phase-space structure and create saddle-related slow transients in certain parameter regimes. The frequency mismatch $\Omega$ controls the intrinsic bias of the circadian system relative to the 24-hour environment. Since the natural human circadian period is often slightly longer than 24 hours, the system is biased toward phase delay, making westward adjustment generally easier than eastward adjustment.</p>
+<figure><img src="assets/17_circadian_parameter_dependence.png" alt="Figure"><figcaption>\textbf{Dependence of circadian recovery time on model parameters:</figcaption></figure>
+<h3 id="connection-to-large-scale-brain-synchronization">Connection to Large-Scale Brain Synchronization</h3>
+<p>Although the SCN circadian model is much smaller and more idealized than the AAL-based cortical connectome model, it complements our previous results in an important way. The AD analysis focused on how structural network damage elevates the critical coupling threshold and delays the formation of global synchrony. The circadian model instead focuses on how an already synchronized neural oscillator system returns to synchrony after an external phase perturbation.</p>
+<p>Together, these two parts emphasize a unified view of brain synchronization. Healthy brain networks must not only support coherent collective dynamics but also maintain the ability to flexibly resynchronize after perturbations. In cortical networks, this capacity is strongly dependent on anatomical hubs and structural integrity. In the SCN, it depends on the interaction between oscillator coupling, external forcing, and intrinsic frequency mismatch. In both cases, synchronization is not a static property, but a dynamic process shaped by the structure of the network,  the strength of coupling, and external constraints.</p>
+<section id="conclusion" class="paper-section"><h2>Conclusion</h2>
+<p>In this work, we systematically investigated synchronization emergence in brain networks through the Kuramoto model, bridging theory, simulation, and clinical translation.</p>
+<p>Numerical experiments on synthetic topologies confirmed that scale-free networks synchronize at substantially lower coupling strengths than homogeneous graphs, highlighting the disproportionate role of network hubs (Sec. <span class="xref">subsec:hetero</span>). Building on this, we constructed a weighted structural connectome from the AAL-90 atlas and performed large-scale Kuramoto simulations on realistic brain topology (Sec. <span class="xref">sec:connectome</span>---<span class="xref">sec:brain_sync</span>). Three principal findings emerged. First, high-centrality cortical hubs act as topological pacemakers that lower the energy barrier for global synchronization. Second, targeted lesion of these hubs causes cascading dynamical degradation far exceeding random deletions, establishing a direct causal link between hub integrity and network synchronizability. Third, across the Alzheimer's disease (AD) continuum (CN $\rightarrow$ EMCI $\rightarrow$ LMCI $\rightarrow$ AD), we observed a consistent stage-dependent rightward shift in the synchronization phase transition, traced to the selective degeneration of high-centrality hubs. <em>In silico</em> perturbation-rescue experiments further demonstrated that targeted repair of the top 10\</p>
+<p>Several limitations of the present study should be acknowledged. The Kuramoto model, while analytically tractable, abstracts away conduction delays, excitatory--inhibitory balance, and higher-order coupling motifs present in real neural systems. The AAL-90 parcellation provides only a macroscopic view of structural connectivity, and the AD connectome data represent group-averaged templates rather than individual-level networks. Furthermore, our perturbation-rescue experiments, though causally suggestive, yield effect sizes that call for larger samples and more refined intervention protocols.</p>
+<p>Future work may extend this framework in at least three directions. Theoretically, incorporating time-delayed coupling and noise into the connectome-based simulations could better capture the metastable dynamics characteristic of resting-state brain activity. Clinically, developing patient-specific connectome models -- potentially informed by individual diffusion MRI and longitudinal cognitive scores -- may enable personalized predictions of disease trajectory and treatment response. Methodologically, integrating the Kuramoto synchronization analysis with machine learning classifiers trained on topological and dynamical features could yield early biomarkers for neurodegenerative disorders. More broadly, the conceptual pipeline demonstrated here -- from physical model to structural connectome to clinical phenomenology -- may prove useful for studying synchronization-related pathologies beyond Alzheimer's disease.</p>
+<section id="codes-availability" class="paper-section"><h2>Codes Availability</h2>
+<p>Codes are wrapped and sent with this report, and are also included in the <a href="https://github.com/JunfengLyu/Brain_Synchronization_Kuramoto">\faGithub\ GitHub repository https://github.com/JunfengLyu/Brain\_Synchronization\_Kuramoto</a>. An online extended interactive webpage is also made and can be viewed at <a href="https://junfenglyu.github.io/Brain_Synchronization_Kuramoto/"> https://junfenglyu.github.io/Brain\_Synchronization\_Kuramoto/</a>.</p>
+<section id="acknowledgment-and-collaboration" class="paper-section"><h2>Acknowledgment and Collaboration</h2>
+<p>We thank Prof. Tao and Prof. Champer for practical guidance and suggestions in the presentation session to help us reorganize the logic of the whole program and set the main body of the report to the brain network simulation and extension.</p>
+<p>All team members contribute equally to the whole project including brainstorm, presentation, and this final report.</p></article><section id="code" class="paper-section"><h2>Minimal Code Blocks</h2><details><summary>MATLAB Kuramoto demo</summary><pre><code>%% Kuramoto Rotors
+%% Interactive exploration of synchronization in the Kuramoto model
 
-    <main class="paper">
-      <section class="hero" id="abstract">
-        <p class="eyebrow">Complex systems · nonlinear dynamics · brain networks</p>
-        <h2>Modeling the Emergent Synchronization of Brain Networks</h2>
-        <p>
-          Synchronization is a universal phenomenon observed in systems ranging from
-          firefly swarms to circadian clocks and neuronal populations. Here we investigate
-          large-scale brain synchronization using the Kuramoto model on structural
-          connectomes derived from the AAL atlas and ADNI-related cohorts.
-        </p>
-        <p>
-          The project connects mean-field Kuramoto theory, network topology, empirical
-          brain connectomes, Alzheimer's disease progression, and circadian
-          resynchronization. The page below combines the report text, final figures,
-          browser simulations, and minimal reproducible code.
-        </p>
-      </section>
+clear;clc;close all;
 
-      <section id="introduction" class="content-section">
-        <h2>Introduction to Synchronization Phenomenon</h2>
-        <p>
-          Synchronization describes the tendency of interacting oscillators to coordinate
-          rhythms to a global frequency and phase. Its scientific study can be traced to
-          Huygens' 17th-century observation of coupled pendulums and now spans physical,
-          chemical, and biological systems.
-        </p>
-        <p>
-          Biological synchronization appears across scales: firefly swarms generate
-          synchronized flashes, cardiac tissue contracts coherently, neural populations
-          produce collective rhythms, and molecular circadian clocks maintain robust
-          daily cycles. Brain synchronization is especially important because coordinated
-          activity may support communication, perception, and attention, while abnormal
-          synchronization is linked to neurological disorders.
-        </p>
-        <figure>
-          <img src="assets/01_Sync_history.png" alt="History and examples of synchronization">
-          <figcaption><strong>Figure 1.</strong> Historical and biological examples of synchronization.</figcaption>
-        </figure>
-      </section>
+%% Parameters
+N=64;
+sigma0=0.50;
+K0=1.20;
+dt=0.05;
+steps_per_frame=15;
+T_window=120;
+record_window=25;
+rng(1);
 
-      <section id="kuramoto" class="content-section">
-        <h2>Review on Kuramoto Model</h2>
-        <p>
-          For $N$ oscillators with phases $\theta_i$, the classical Kuramoto model is
-        </p>
-        $$
-        \frac{d\theta_i}{dt}=\omega_i+\frac{K}{N}\sum_{j=1}^{N}\sin(\theta_j-\theta_i).
-        $$
-        <p>
-          Collective synchronization is described by the complex order parameter
-        </p>
-        $$
-        \tilde z(t)=\frac{1}{N}\sum_{j=1}^{N}e^{i\theta_j(t)}=R(t)e^{i\Theta(t)}.
-        $$
-        <p>
-          The magnitude $R(t)$ measures coherence: $R\to0$ indicates incoherence, while
-          $R\to1$ indicates phase locking.
-        </p>
-        <figure>
-          <img src="assets/02_order_parameter_schematic.png" alt="Order parameter schematic">
-          <figcaption><strong>Figure 2.</strong> Static schematic of the order parameter under weak and strong coupling.</figcaption>
-        </figure>
-        <p>
-          In the rotating frame $\phi_i=\theta_i-\bar\omega t$, mean-field theory gives
-        </p>
-        $$
-        \frac{d\phi_i}{dt}=\nu_i-KR\sin\phi_i.
-        $$
-        <p>
-          Fixed points exist when $|\nu_i|\le KR$, explaining how the synchronized
-          subgroup emerges as coupling increases.
-        </p>
-        <figure>
-          <img src="assets/03_phase_diagram.png" alt="Mean-field phase diagram">
-          <figcaption><strong>Figure 3.</strong> Fixed-point loss in the reduced mean-field phase equation.</figcaption>
-        </figure>
-        <p>
-          For a Gaussian frequency distribution, the self-consistency equation produces
-          the critical coupling
-        </p>
-        $$
-        K_c=\frac{2}{\pi g(\bar\omega)},\qquad R^*\sim(K-K_c)^{1/2}.
-        $$
-        <figure>
-          <img src="assets/04_mean_field_bifurcation.png" alt="Mean-field bifurcation">
-          <figcaption><strong>Figure 4.</strong> Mean-field bifurcation and finite-size simulation comparison.</figcaption>
-        </figure>
-        <p>
-          Heterogeneous network coupling replaces the all-to-all interaction with a
-          connection matrix:
-        </p>
-        $$
-        \frac{d\theta_i}{dt}=\omega_i+\frac{1}{N}\sum_{j=1}^{N}K_{ij}\sin(\theta_j-\theta_i).
-        $$
-        <p>
-          Global, Erdős-Rényi, and Barabási-Albert networks reveal how hubs reduce the
-          coupling threshold for synchronization.
-        </p>
-        <figure>
-          <img src="assets/05_network_topology_transition.png" alt="Topology transition">
-          <figcaption><strong>Figure 5.</strong> Synchronization transition under global, ER random, and BA scale-free topologies.</figcaption>
-        </figure>
+%% Figure
+fig=figure(&#x27;Color&#x27;,&#x27;w&#x27;,&#x27;Position&#x27;,[100 100 1300 760]);
+ax1=subplot(2,2,1);
+ax2=subplot(2,2,2);
+ax3=subplot(2,2,[3 4]);
+colormap(fig,plasma(256));
 
-        <h3>Interactive Kuramoto Demos</h3>
-        <p>
-          These browser simulations mirror the MATLAB demos: the first shows oscillator
-          phases, mean-field prediction, simulation point, and burst-like spike events;
-          the second scans finite-size transition curves.
-        </p>
+%% UI
+uicontrol(&#x27;Style&#x27;,&#x27;text&#x27;,&#x27;Units&#x27;,&#x27;normalized&#x27;,&#x27;Position&#x27;,[0.08 0.965 0.10 0.025],...
+    &#x27;String&#x27;,&#x27;sigma&#x27;,&#x27;BackgroundColor&#x27;,&#x27;w&#x27;);
+sliderSigma=uicontrol(&#x27;Style&#x27;,&#x27;slider&#x27;,&#x27;Units&#x27;,&#x27;normalized&#x27;,...
+    &#x27;Position&#x27;,[0.17 0.965 0.22 0.025],...
+    &#x27;Min&#x27;,0.05,&#x27;Max&#x27;,0.80,&#x27;Value&#x27;,sigma0);
+textSigma=uicontrol(&#x27;Style&#x27;,&#x27;text&#x27;,&#x27;Units&#x27;,&#x27;normalized&#x27;,...
+    &#x27;Position&#x27;,[0.40 0.965 0.08 0.025],...
+    &#x27;String&#x27;,sprintf(&#x27;%.2f&#x27;,sigma0),&#x27;BackgroundColor&#x27;,&#x27;w&#x27;);
 
-        <div class="code-card">
-          <div class="code-tabs" aria-label="Code language tabs">
-            <button class="code-tab active" data-code="matlab">MATLAB</button>
-            <button class="code-tab" data-code="python">Python</button>
-          </div>
-          <pre class="code-block active" data-code-panel="matlab"><code>z = mean(exp(1i * theta));
-R = abs(z);
-Psi = angle(z);
-dtheta = omega + K * R * sin(Psi - theta);
-theta = theta + dt * dtheta;</code></pre>
-          <pre class="code-block" data-code-panel="python"><code>z = np.mean(np.exp(1j * theta))
-R = np.abs(z)
-Psi = np.angle(z)
-dtheta = omega + K * R * np.sin(Psi - theta)
-theta = theta + dt * dtheta</code></pre>
-        </div>
+uicontrol(&#x27;Style&#x27;,&#x27;text&#x27;,&#x27;Units&#x27;,&#x27;normalized&#x27;,...
+    &#x27;Position&#x27;,[0.52 0.965 0.06 0.025],...
+    &#x27;String&#x27;,&#x27;K&#x27;,&#x27;BackgroundColor&#x27;,&#x27;w&#x27;);
+sliderK=uicontrol(&#x27;Style&#x27;,&#x27;slider&#x27;,&#x27;Units&#x27;,&#x27;normalized&#x27;,...
+    &#x27;Position&#x27;,[0.58 0.965 0.22 0.025],...
+    &#x27;Min&#x27;,0,&#x27;Max&#x27;,2.0,&#x27;Value&#x27;,K0);
+textK=uicontrol(&#x27;Style&#x27;,&#x27;text&#x27;,&#x27;Units&#x27;,&#x27;normalized&#x27;,...
+    &#x27;Position&#x27;,[0.81 0.965 0.08 0.025],...
+    &#x27;String&#x27;,sprintf(&#x27;%.2f&#x27;,K0),&#x27;BackgroundColor&#x27;,&#x27;w&#x27;);
 
-        <div class="interactive-grid">
-          <article class="demo-card">
-            <div class="demo-header">
-              <h4>Live Kuramoto Lab</h4>
-              <p>Oscillator circle, MF prediction, simulation point, and burst spikes.</p>
-            </div>
-            <div class="controls compact">
-              <label>N <output id="live-n-value">64</output><input id="live-n" type="range" min="16" max="128" step="16" value="64"></label>
-              <label>$\sigma$ <output id="live-sigma-value">0.50</output><input id="live-sigma" type="range" min="0.05" max="0.80" step="0.01" value="0.50"></label>
-              <label>K <output id="live-k-value">1.20</output><input id="live-k" type="range" min="0" max="2.0" step="0.01" value="1.20"></label>
-              <label>speed <output id="live-speed-value">1.0x</output><input id="live-speed" type="range" min="0.2" max="2.4" step="0.1" value="1.0"></label>
-            </div>
-            <div class="button-row">
-              <button id="live-reset">Reset</button>
-              <button id="live-pause">Pause</button>
-              <span>R = <strong id="live-r">0.000</strong></span>
-            </div>
-            <canvas id="phase-canvas" width="520" height="360"></canvas>
-            <canvas id="diagram-canvas" width="520" height="300"></canvas>
-            <canvas id="raster-canvas" width="520" height="220"></canvas>
-          </article>
+%% State
+state.N=N;
+state.sigma=sigma0;
+state.K=K0;
+state.last_sigma=sigma0;
+state.last_K=K0;
+state.omega=[];
+state.theta=[];
+state.t=0;
+state.step=0;
+state.r_history=[];
+state.spike_t=[];
+state.spike_i=[];
+state.live_K=K0;
+state.live_r=NaN;
+state.need_new_omega=true;
+state.need_reset=true;
 
-          <article class="demo-card">
-            <div class="demo-header">
-              <h4>Finite-Size Transition Sweep</h4>
-              <p>Mean-field prediction versus simulations under different N.</p>
-            </div>
-            <div class="controls compact">
-              <label>$\sigma$ <output id="sweep-sigma-value">0.50</output><input id="sweep-sigma" type="range" min="0.10" max="0.80" step="0.05" value="0.50"></label>
-              <label>K max <output id="sweep-kmax-value">2.00</output><input id="sweep-kmax" type="range" min="1.0" max="2.5" step="0.1" value="2.0"></label>
-              <label>points <output id="sweep-points-value">31</output><input id="sweep-points" type="range" min="21" max="51" step="10" value="31"></label>
-            </div>
-            <fieldset class="checks">
-              <legend>N</legend>
-              <label><input class="sweep-n" type="checkbox" value="10" checked>10</label>
-              <label><input class="sweep-n" type="checkbox" value="100" checked>100</label>
-              <label><input class="sweep-n" type="checkbox" value="1000" checked>1000</label>
-              <label><input class="sweep-n" type="checkbox" value="10000">10000</label>
-            </fieldset>
-            <div class="button-row">
-              <button id="run-sweep">Run sweep</button>
-              <button id="cancel-sweep" disabled>Cancel</button>
-              <span id="sweep-status">Ready.</span>
-            </div>
-            <div class="progress"><span id="sweep-progress"></span></div>
-            <canvas id="transition-canvas" width="640" height="460"></canvas>
-          </article>
-        </div>
-      </section>
+setappdata(fig,&#x27;state&#x27;,state);
 
-      <section id="connectome" class="content-section">
-        <h2>Connection Architecture Based on the AAL Atlas Connectome</h2>
-        <p>
-          The empirical brain network uses the AAL-90 atlas, where each macroscopic brain
-          region is modeled as an oscillator. Subject-level structural matrices are
-          symmetrized, self-connections are removed, and a 40% population consensus rule
-          retains edges present across a sufficient fraction of subjects.
-        </p>
-        <p>
-          Node degree is used to identify structural super hubs above the 85th percentile.
-          These hubs become the targets for later perturbation and rescue experiments.
-        </p>
-        <figure>
-          <img src="assets/06_aal_connectome_construction.png" alt="AAL connectome construction">
-          <figcaption><strong>Figure 6.</strong> AAL-90 consensus matrix and hub degree distribution.</figcaption>
-        </figure>
-      </section>
+%% Callbacks
+set(sliderSigma,&#x27;Callback&#x27;,@(src,evt)slider_callback(fig,sliderSigma,sliderK,textSigma,textK));
+set(sliderK,&#x27;Callback&#x27;,@(src,evt)slider_callback(fig,sliderSigma,sliderK,textSigma,textK));
 
-      <section id="brain-sync" class="content-section">
-        <h2>Modeling Synchronization of Brain Networks</h2>
-        <p>
-          The AAL network is injected into a stochastic Kuramoto equation:
-        </p>
-        $$
-        d\theta_i=\omega_i\,dt+\lambda\sum_{j=1}^{N}M_{ij}\sin(\theta_j-\theta_i)\,dt+\sigma\,dW_i.
-        $$
-        <p>
-          The global order parameter $R$ and edge synchronization $R_{link}$ quantify
-          macroscopic coherence and structural-edge phase locking.
-        </p>
-        <div class="figure-grid">
-          <figure>
-            <img src="assets/07_macroscopic_synchronization_dynamics.png" alt="Macroscopic synchronization">
-            <figcaption><strong>Figure 7.</strong> Robust, middle, and unstable macroscopic synchronization states.</figcaption>
-          </figure>
-          <figure>
-            <img src="assets/08_lambda_dependent_synchronization_states.png" alt="Lambda dependent states">
-            <figcaption><strong>Figure 8.</strong> Coupling-dependent transition and representative functional-connectivity heatmaps.</figcaption>
-          </figure>
-        </div>
-        <p>
-          Module-wise simulations show that local synchronization emerges before global
-          coherence. The top structural hubs lock earlier than regular modules and act as
-          a dynamical anchor for whole-brain integration.
-        </p>
-        <figure>
-          <img src="assets/09_modules_and_hubs_synchronization.png" alt="Modules and hubs">
-          <figcaption><strong>Figure 9.</strong> Mesoscale synchronization of anatomical modules and hubs.</figcaption>
-        </figure>
-        <p>
-          Targeted frequency perturbation experiments compare hub nodes, random peripheral
-          nodes, and the frontal module. Hubs entrain the rest of the network at the lowest
-          critical coupling, demonstrating strong topological leverage.
-        </p>
-        <figure>
-          <img src="assets/10_focal_perturbation_frequency_entrainment.png" alt="Focal perturbation">
-          <figcaption><strong>Figure 10.</strong> Whole-brain frequency entrainment under focal dynamical perturbations.</figcaption>
-        </figure>
-      </section>
+%% Main Loop
+while ishandle(fig)
+    state=getappdata(fig,&#x27;state&#x27;);
 
-      <section id="ad" class="content-section">
-        <h2>Alzheimer's Disease Continuum</h2>
-        <p>
-          Group-average structural connectomes are built for CN, EMCI, LMCI, and AD
-          cohorts. Topological regression tests whether regions with high centrality,
-          clustering, local efficiency, or participation coefficient are preferentially
-          affected by structural degradation.
-        </p>
-        <div class="figure-grid">
-          <figure>
-            <img src="assets/11_ad_connectome_evolution.png" alt="AD connectome evolution">
-            <figcaption><strong>Figure 11.</strong> Structural connectome evolution across the AD continuum.</figcaption>
-          </figure>
-          <figure>
-            <img src="assets/12_topological_lesion_regression.png" alt="Lesion regression">
-            <figcaption><strong>Figure 12.</strong> Regression between baseline topology and lesion burden.</figcaption>
-          </figure>
-        </div>
-        <p>
-          Kuramoto simulations show a subtle but consistent rightward shift of the phase
-          transition along disease progression. The AD network requires elevated coupling
-          to reach comparable global coherence.
-        </p>
-        <div class="figure-grid">
-          <figure>
-            <img src="assets/13_ad_phase_transition_delay.png" alt="AD transition delay">
-            <figcaption><strong>Figure 13.</strong> Stage-dependent synchronization delay across the AD continuum.</figcaption>
-          </figure>
-          <figure>
-            <img src="assets/14_perturbation_rescue_experiment.png" alt="Perturbation rescue">
-            <figcaption><strong>Figure 14.</strong> In silico targeted versus random perturbation-rescue experiment.</figcaption>
-          </figure>
-        </div>
-      </section>
+    if state.need_reset
+        state=initialize_system(state);
+        state.need_reset=false;
+        setappdata(fig,&#x27;state&#x27;,state);
+        draw_all(ax1,ax2,ax3,state,T_window);
+    end
 
-      <section id="circadian" class="content-section">
-        <h2>Resynchronization Dynamics of Circadian Brain Oscillators</h2>
-        <p>
-          A forced Kuramoto model describes SCN circadian oscillators under external
-          light-dark forcing:
-        </p>
-        $$
-        \frac{d\theta_i}{dt}=\omega_i+\frac{K}{N}\sum_j\sin(\theta_j-\theta_i)+F\sin(\sigma t-\theta_i+p(t)).
-        $$
-        <p>
-          With a Lorentzian frequency distribution, the Ott-Antonsen reduction yields
-        </p>
-        $$
-        \dot{\tilde z}=\frac{1}{2}[(K\tilde z+F)-\tilde z^2(K\bar{\tilde z}+F)]-(\Delta+i\Omega)\tilde z.
-        $$
-        <p>
-          Phase-space geometry explains east-west jet-lag asymmetry: saddle structures
-          and separatrices can prolong recovery for specific phase advances.
-        </p>
-        <div class="figure-grid">
-          <figure>
-            <img src="assets/15_circadian_phase_space_dynamics.png" alt="Circadian phase portrait">
-            <figcaption><strong>Figure 15.</strong> Phase-space dynamics of forced Kuramoto circadian oscillators.</figcaption>
-          </figure>
-          <figure>
-            <img src="assets/16_circadian_recovery_trajectories.png" alt="Circadian recovery">
-            <figcaption><strong>Figure 16.</strong> Recovery trajectories after eastward and westward shifts.</figcaption>
-          </figure>
-        </div>
-        <figure>
-          <img src="assets/17_circadian_parameter_dependence.png" alt="Circadian parameter dependence">
-          <figcaption><strong>Figure 17.</strong> Recovery-time dependence on coupling, forcing, and frequency mismatch.</figcaption>
-        </figure>
-      </section>
+    for q=1:steps_per_frame
+        state=step_system(state,dt,record_window);
+    end</code></pre></details><details><summary>Python Kuramoto demo</summary><pre><code>import matplotlib.pyplot as plt
+import numpy as np
 
-      <section id="code" class="content-section">
-        <h2>Reproducible Code</h2>
-        <p>
-          The root scripts reproduce the report figures while preserving the section-level
-          source code for traceability.
-        </p>
-        <div class="snippet-grid">
-          <pre><code>python3 01_Kuramoto_demo.py
-python3 02_Brain_Kuramoto.py
-python3 03_Circadian_clock.py</code></pre>
-          <pre><code>run("01_Kuramoto_demo.m")
-run("02_Brain_Kuramoto.m")
-run("03_Circadian_clock.m")</code></pre>
-        </div>
-      </section>
-    </main>
 
-    <script src="app.js"></script>
-  </body>
-</html>
+TAU = 2 * np.pi
+
+
+def wrap_pi(x):
+    return (x + np.pi) % TAU - np.pi
+
+
+def top_crossing(theta_old, theta_new):
+    old = wrap_pi(theta_old - np.pi / 2)
+    new = wrap_pi(theta_new - np.pi / 2)
+    return ((old &lt; 0) &amp; (new &gt;= 0) | (old &gt; 0) &amp; (new &lt;= 0)) &amp; (np.abs(new - old) &lt; np.pi)
+
+
+def step(theta, omega, k, dt):
+    z = np.mean(np.exp(1j * theta))
+    r, psi = abs(z), np.angle(z)
+    return theta + dt * (omega + k * r * np.sin(psi - theta)), r
+
+
+def simulate(n=64, sigma=0.50, k=1.20, dt=0.05, steps=1800, seed=1):
+    rng = np.random.default_rng(seed)
+    omega = np.sort(1.0 + sigma * rng.standard_normal(n))
+    theta = np.ones(n) * np.pi / 2
+    r_hist, spikes = [], []
+    for s in range(steps):
+        theta_new, r = step(theta, omega, k, dt)
+        crossed = np.flatnonzero(top_crossing(theta, theta_new))
+        for idx in crossed:
+            spikes.append((s * dt, idx))
+        theta = theta_new
+        r_hist.append((s * dt, r))
+    return omega, theta, np.asarray(r_hist), np.asarray(spikes)
+
+
+def main(save=False):
+    omega, theta, r_hist, spikes = simulate()
+    fig = plt.figure(figsize=(13, 7.6))
+    ax1 = fig.add_subplot(2, 2, 1)
+    ax2 = fig.add_subplot(2, 2, 2)
+    ax3 = fig.add_subplot(2, 2, (3, 4))
+    colors = plt.cm.plasma(np.linspace(0.08, 0.92, len(theta)))
+
+    circle = np.linspace(0, TAU, 400)
+    ax1.plot(np.cos(circle), np.sin(circle), color=&quot;0.1&quot;, lw=1)
+    ax1.scatter(np.cos(theta), np.sin(theta), s=35, c=colors, edgecolor=&quot;k&quot;, lw=0.3)
+    z = np.mean(np.exp(1j * theta))
+    ax1.arrow(0, 0, z.real, z.imag, width=0.01, color=&quot;k&quot;, length_includes_head=True)
+    ax1.set_aspect(&quot;equal&quot;)
+    ax1.axis(&quot;off&quot;)
+
+    k_grid = np.linspace(0, 2, 200)
+    kc = 2 * np.sqrt(2 / np.pi) * 0.5
+    mf = np.where(k_grid &gt; kc, np.sqrt(np.maximum(0, 1 - kc / np.maximum(k_grid, 1e-9))), 0)
+    ax2.plot(k_grid, mf, color=&quot;0.4&quot;, lw=2)
+    ax2.scatter([1.2], [np.mean(r_hist[-500:, 1])], c=&quot;crimson&quot;, s=45, zorder=3)
+    ax2.set_xlabel(&quot;K&quot;)
+    ax2.set_ylabel(&quot;R&quot;)
+    ax2.set_ylim(0, 1.05)
+    ax2.spines[[&quot;top&quot;, &quot;right&quot;]].set_visible(False)
+
+    if len(spikes):
+        ax3.scatter(spikes[:, 0], spikes[:, 1] + 1, s=3, color=&quot;k&quot;)
+    ax3.set_xlabel(&quot;Time&quot;)
+    ax3.set_ylabel(&quot;Oscillator index&quot;)
+    ax3.spines[[&quot;top&quot;, &quot;right&quot;]].set_visible(False)
+    if save:
+        fig.savefig(&quot;Kuramoto_rotor_snapshot.png&quot;, dpi=300, bbox_inches=&quot;tight&quot;)
+    return fig
+
+
+if __name__ == &quot;__main__&quot;:
+    main(save=False)</code></pre></details><details><summary>MATLAB brain synchronization</summary><pre><code>clear; clc; close all;
+
+baseDir = fileparts(mfilename(&#x27;fullpath&#x27;));
+dataDir = fullfile(baseDir, &#x27;data&#x27;);
+figDir = fullfile(baseDir, &#x27;..&#x27;, &#x27;..&#x27;, &#x27;Report&#x27;, &#x27;Figs&#x27;);
+if ~exist(figDir, &#x27;dir&#x27;), mkdir(figDir); end
+rng(42);
+
+[Mgroup, probMat] = load_aal_consensus(dataDir, 0.40);
+modules = brain_modules(size(Mgroup, 1));
+deg = sum(Mgroup, 2);
+[~, hubOrder] = sort(deg, &#x27;descend&#x27;);
+hubs = hubOrder(1:min(10, numel(hubOrder)));
+
+make_fig07(Mgroup, figDir);
+make_fig08(Mgroup, figDir);
+make_fig09(Mgroup, modules, hubs, figDir);
+make_fig10(Mgroup, modules, hubs, figDir);
+
+fprintf(&#x27;Brain_sync.m finished: Fig.7-10 are generated from real AAL connectivity data.\n&#x27;);
+
+function make_fig07(M, figDir)
+lambdaVals = [0.040, 0.023, 0.010];
+labels = {&#x27;Robust synchronization&#x27;, &#x27;Middle state&#x27;, &#x27;Unstable state&#x27;};
+cols = twilight_colors(numel(lambdaVals));
+fig = figure(&#x27;Color&#x27;, &#x27;w&#x27;, &#x27;Position&#x27;, [100 100 545 310]); hold on;
+for i = 1:numel(lambdaVals)
+    [t, R] = simulate_trace(M, lambdaVals(i), 1300, 0.03, 0.2, 20+i);
+    plot(t, R, &#x27;LineWidth&#x27;, 1.5, &#x27;Color&#x27;, cols(i,:), &#x27;DisplayName&#x27;, labels{i});
+end
+xlabel(&#x27;Time [a.u.]&#x27;); ylabel(&#x27;$R(t)$&#x27;, &#x27;Interpreter&#x27;, &#x27;latex&#x27;);
+xlim([0 max(t)]); ylim([0 1.02]);
+legend(&#x27;Location&#x27;, &#x27;eastoutside&#x27;, &#x27;Box&#x27;, &#x27;off&#x27;);
+style_axes(gca);
+exportgraphics(fig, fullfile(figDir, &#x27;07_macroscopic_synchronization_dynamics.png&#x27;), &#x27;Resolution&#x27;, 300, &#x27;BackgroundColor&#x27;, &#x27;w&#x27;);
+end
+
+function make_fig08(M, figDir)
+lambdas = linspace(0, 0.05, 70);
+[Rmean, Rstd, Rlink, snaps] = scan_network(M, lambdas, 900, 480, 0.03, 0.2, 61);
+cols = twilight_colors(3);
+fig = figure(&#x27;Color&#x27;, &#x27;w&#x27;, &#x27;Position&#x27;, [100 100 540 545]);
+ax = axes(&#x27;Position&#x27;, [0.12 0.61 0.80 0.30]); hold on;
+patch([0.015 0.030 0.030 0.015], [0 0 1.05 1.05], [0.16 0.65 0.72], ...
+    &#x27;FaceAlpha&#x27;, 0.10, &#x27;EdgeColor&#x27;, &#x27;none&#x27;);
+plot(lambdas, Rmean, &#x27;-o&#x27;, &#x27;MarkerSize&#x27;, 2.4, &#x27;LineWidth&#x27;, 1.5, &#x27;Color&#x27;, cols(1,:), &#x27;DisplayName&#x27;, &#x27;$R$&#x27;);
+plot(lambdas, Rlink, &#x27;-s&#x27;, &#x27;MarkerSize&#x27;, 2.2, &#x27;LineWidth&#x27;, 1.5, &#x27;Color&#x27;, cols(2,:), &#x27;DisplayName&#x27;, &#x27;$R_{link}$&#x27;);
+plot(lambdas, 5*Rstd, &#x27;--&#x27;, &#x27;LineWidth&#x27;, 1.5, &#x27;Color&#x27;, cols(3,:), &#x27;DisplayName&#x27;, &#x27;$5\sigma_R$&#x27;);
+text(-0.09, 1.05, &#x27;A&#x27;, &#x27;Units&#x27;, &#x27;normalized&#x27;, &#x27;FontName&#x27;, &#x27;Arial&#x27;, &#x27;FontSize&#x27;, 11);
+xlabel(&#x27;$\lambda$&#x27;, &#x27;Interpreter&#x27;, &#x27;latex&#x27;); ylabel(&#x27;Synchronization level&#x27;);
+xlim([0 0.05]); ylim([0 1.05]);
+legend(&#x27;Location&#x27;, &#x27;northwest&#x27;, &#x27;Box&#x27;, &#x27;off&#x27;, &#x27;Interpreter&#x27;, &#x27;latex&#x27;);
+style_axes(ax);
+
+targetLams = [0.010, 0.0225, 0.035];
+heatSize = 0.215;
+heatY = 0.16;
+heatX = [0.12 0.385 0.65];
+for j = 1:3
+    axj = axes(&#x27;Position&#x27;, [heatX(j) heatY heatSize heatSize]); %#ok&lt;LAXES&gt;
+    [~, idx] = min(abs(lambdas - targetLams(j)));
+    fc = plv_matrix(snaps{idx});
+    imagesc(axj, fc, [0 1]); axis(axj, &#x27;image&#x27;); axis(axj, &#x27;off&#x27;);
+    colormap(axj, parula(256));
+    if j == 1
+        text(axj, -0.20, 1.12, &#x27;B&#x27;, &#x27;Units&#x27;, &#x27;normalized&#x27;, &#x27;FontName&#x27;, &#x27;Arial&#x27;, &#x27;FontSize&#x27;, 11);
+    end
+    text(axj, 0.03, 0.95, sprintf(&#x27;$\\lambda=%.4f$&#x27;, targetLams(j)), ...
+        &#x27;Units&#x27;, &#x27;normalized&#x27;, &#x27;Interpreter&#x27;, &#x27;latex&#x27;, &#x27;FontName&#x27;, &#x27;Arial&#x27;, &#x27;FontSize&#x27;, 8, ...
+        &#x27;Color&#x27;, &#x27;w&#x27;, &#x27;VerticalAlignment&#x27;, &#x27;top&#x27;);
+end
+cb = colorbar(axj, &#x27;Position&#x27;, [0.90 heatY 0.018 heatSize]); cb.Label.String = &#x27;PLV&#x27;;
+exportgraphics(fig, fullfile(figDir, &#x27;08_lambda_dependent_synchronization_states.png&#x27;), &#x27;Resolution&#x27;, 300, &#x27;BackgroundColor&#x27;, &#x27;w&#x27;);
+end
+
+function make_fig09(M, modules, hubs, figDir)
+lambdas = linspace(0, 0.05, 56);
+[~, ~, ~, snaps] = scan_network(M, lambdas, 720, 380, 0.03, 0.2, 74);
+modNames = fieldnames(modules);
+modCols = twilight_colors(numel(modNames));</code></pre></details><details><summary>Python brain synchronization</summary><pre><code>from pathlib import Path
+
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib.patches import ConnectionPatch, Rectangle
+from scipy.io import loadmat
+
+
+BASE = Path(__file__).resolve().parent
+FIG_DIR = BASE.parent.parent / &quot;Report&quot; / &quot;Figs&quot;
+
+
+def twilight_colors(n):
+    cmap = plt.get_cmap(&quot;twilight&quot;)
+    return np.array([cmap(x)[:3] for x in np.linspace(0.08, 0.88, n)])
+
+
+def style_axes(ax):
+    ax.spines[&quot;top&quot;].set_visible(False)
+    ax.spines[&quot;right&quot;].set_visible(False)
+    ax.tick_params(direction=&quot;out&quot;, width=1.1, labelsize=8.5)
+    for spine in ax.spines.values():
+        spine.set_linewidth(1.1)
+
+
+def load_aal_consensus(threshold=0.40):
+    sc = loadmat(BASE / &quot;data&quot; / &quot;rawdata.mat&quot;)[&quot;SCmatrices&quot;]
+    sc = 0.5 * (sc + np.transpose(sc, (0, 2, 1)))
+    n = sc.shape[1]
+    sc[:, np.arange(n), np.arange(n)] = 0
+    prob = (sc &gt; 0).mean(axis=0)
+    mat = (prob &gt;= threshold).astype(float)
+    np.fill_diagonal(mat, 0)
+    return mat, prob
+
+
+def brain_modules(n):
+    return {
+        &quot;Frontal&quot;: np.arange(0, min(28, n)),
+        &quot;Limbic_Subcortical&quot;: np.arange(28, min(46, n)),
+        &quot;Occipital&quot;: np.arange(46, min(58, n)),
+        &quot;Parietal&quot;: np.arange(58, min(72, n)),
+        &quot;Temporal&quot;: np.arange(72, n),
+    }
+
+
+def simulate_trace(mat, lam, steps, dt, noise, seed):
+    rng = np.random.default_rng(seed)
+    n = mat.shape[0]
+    deg = mat.sum(axis=1)
+    deg[deg == 0] = 1
+    wmat = mat / deg[:, None]
+    omega = rng.normal(size=n)
+    theta = rng.random(n) * 2 * np.pi
+    r = np.zeros(steps)
+    for s in range(steps):
+        phase = theta[None, :] - theta[:, None]
+        theta += dt * (omega + lam * 90 * (wmat * np.sin(phase)).sum(axis=1))
+        theta += noise * np.sqrt(dt) * rng.normal(size=n)
+        r[s] = abs(np.exp(1j * theta).mean())
+    return np.arange(steps) * dt, r
+
+
+def scan_network(mat, lambdas, steps, burn, dt, noise, seed):
+    rng = np.random.default_rng(seed)
+    n = mat.shape[0]
+    deg = mat.sum(axis=1)
+    deg[deg == 0] = 1
+    wmat = mat / deg[:, None]
+    omega = rng.normal(size=n)
+    theta0 = rng.random(n) * 2 * np.pi
+    edge_den = max(mat.sum(), 1)
+    rmean, rstd, rlink, snaps = [], [], [], []
+    for lam in lambdas:
+        theta = theta0.copy()
+        rt, lt, sample = [], [], []
+        for s in range(steps):
+            phase = theta[None, :] - theta[:, None]
+            theta += dt * (omega + lam * 90 * (wmat * np.sin(phase)).sum(axis=1))
+            theta += noise * np.sqrt(dt) * rng.normal(size=n)</code></pre></details><details><summary>MATLAB disease analysis</summary><pre><code>clear; clc; close all;
+
+baseDir = fileparts(mfilename(&#x27;fullpath&#x27;));
+dataDir = fullfile(baseDir, &#x27;data&#x27;);
+figDir = fullfile(baseDir, &#x27;..&#x27;, &#x27;..&#x27;, &#x27;Report&#x27;, &#x27;Figs&#x27;);
+if ~exist(figDir, &#x27;dir&#x27;), mkdir(figDir); end
+rng(42);
+
+groups = {&#x27;CN&#x27;,&#x27;EMCI&#x27;,&#x27;LMCI&#x27;,&#x27;AD&#x27;};
+cols = twilight_colors(numel(groups));
+[meansFull, counts] = load_group_means(dataDir, groups, [], false);
+
+make_fig11(meansFull, counts, groups, figDir);
+make_fig12(meansFull, groups, cols, figDir);
+make_fig13(meansFull, counts, groups, cols, figDir);
+make_fig14(dataDir, groups, cols, figDir);
+
+fprintf(&#x27;Brain_disease.m finished: Fig.11-14 are generated from real cohort connectivity data.\n&#x27;);
+
+function make_fig11(means, counts, groups, figDir)
+fig = figure(&#x27;Color&#x27;, &#x27;w&#x27;, &#x27;Position&#x27;, [100 100 820 225]);
+tiledlayout(1, 4, &#x27;TileSpacing&#x27;, &#x27;compact&#x27;, &#x27;Padding&#x27;, &#x27;compact&#x27;);
+for g = 1:numel(groups)
+    ax = nexttile;
+    imagesc(ax, means.(groups{g}), [0 1]); axis(ax, &#x27;image&#x27;); axis(ax, &#x27;off&#x27;);
+    if exist(&#x27;turbo&#x27;, &#x27;file&#x27;), colormap(ax, turbo(256)); else, colormap(ax, parula(256)); end
+    text(ax, -0.18, 1.05, char(&#x27;A&#x27;+g-1), &#x27;Units&#x27;, &#x27;normalized&#x27;, &#x27;FontName&#x27;, &#x27;Arial&#x27;, &#x27;FontSize&#x27;, 11);
+    text(ax, 0.04, 0.95, sprintf(&#x27;%s (n=%d)&#x27;, groups{g}, counts.(groups{g})), ...
+        &#x27;Units&#x27;, &#x27;normalized&#x27;, &#x27;FontName&#x27;, &#x27;Arial&#x27;, &#x27;FontSize&#x27;, 8.5, &#x27;Color&#x27;, &#x27;w&#x27;, &#x27;VerticalAlignment&#x27;, &#x27;top&#x27;);
+end
+cb = colorbar(ax, &#x27;Location&#x27;, &#x27;eastoutside&#x27;); cb.Label.String = &#x27;Normalized structural connectivity&#x27;;
+exportgraphics(fig, fullfile(figDir, &#x27;11_ad_connectome_evolution.png&#x27;), &#x27;Resolution&#x27;, 300, &#x27;BackgroundColor&#x27;, &#x27;w&#x27;);
+end
+
+function make_fig12(means, groups, cols, figDir)
+CN = means.CN;
+diseaseGroups = groups(2:end);
+globalMax = 0;
+rawLesions = struct();
+for i = 1:numel(diseaseGroups)
+    g = diseaseGroups{i};
+    rawLesions.(g) = sum(max(CN - means.(g), 0), 2);
+    globalMax = max(globalMax, max(rawLesions.(g)));
+end
+metrics = graph_metrics(CN);
+metricNames = fieldnames(metrics);
+fig = figure(&#x27;Color&#x27;, &#x27;w&#x27;, &#x27;Position&#x27;, [100 100 740 520]);
+tiledlayout(2, 2, &#x27;TileSpacing&#x27;, &#x27;compact&#x27;, &#x27;Padding&#x27;, &#x27;compact&#x27;);
+for m = 1:4
+    ax = nexttile; hold on;
+    x = metrics.(metricNames{m});
+    leg = cell(1, numel(diseaseGroups));
+    for i = 1:numel(diseaseGroups)
+        g = diseaseGroups{i};
+        y = rawLesions.(g) / max(globalMax, eps);
+        scatter(x, y, 14, cols(i+1,:), &#x27;filled&#x27;, &#x27;MarkerFaceAlpha&#x27;, 0.45);
+        p = polyfit(x, y, 1);
+        xx = linspace(min(x), max(x), 80);
+        plot(xx, polyval(p, xx), &#x27;LineWidth&#x27;, 1.5, &#x27;Color&#x27;, cols(i+1,:));
+        r = corr_local(x(:), y(:));
+        r2 = r^2;
+        F = (r2 * (numel(x)-2)) / max(1-r2, eps);
+        pv = f_upper_pvalue(F, 1, numel(x)-2);
+        leg{i} = sprintf(&#x27;%s: F=%.1f, p=%s&#x27;, g, F, p_string(pv));
+    end
+    text(-0.13, 1.03, char(&#x27;A&#x27;+m-1), &#x27;Units&#x27;, &#x27;normalized&#x27;, &#x27;FontName&#x27;, &#x27;Arial&#x27;, &#x27;FontSize&#x27;, 11);
+    xlabel([&#x27;Baseline &#x27; pretty_metric(metricNames{m})]);
+    ylabel(&#x27;Lesion Count (Normalised)&#x27;);
+    legend(leg, &#x27;Location&#x27;, &#x27;northwest&#x27;, &#x27;Box&#x27;, &#x27;off&#x27;, &#x27;FontSize&#x27;, 6.7);
+    style_axes(ax);
+end
+exportgraphics(fig, fullfile(figDir, &#x27;12_topological_lesion_regression.png&#x27;), &#x27;Resolution&#x27;, 300, &#x27;BackgroundColor&#x27;, &#x27;w&#x27;);
+end
+
+function make_fig13(means, counts, groups, cols, figDir)
+lambdas = linspace(0, 0.05, 151);
+R = zeros(numel(groups), numel(lambdas));
+for g = 1:numel(groups)
+    fprintf(&#x27;Fig13: %s\n&#x27;, groups{g});
+    for k = 1:numel(lambdas)</code></pre></details><details><summary>Python disease analysis</summary><pre><code>from pathlib import Path
+
+import matplotlib.pyplot as plt
+import numpy as np
+from scipy import stats
+
+
+BASE = Path(__file__).resolve().parent
+FIG_DIR = BASE.parent.parent / &quot;Report&quot; / &quot;Figs&quot;
+GROUPS = [&quot;CN&quot;, &quot;EMCI&quot;, &quot;LMCI&quot;, &quot;AD&quot;]
+
+
+def twilight_colors(n):
+    cmap = plt.get_cmap(&quot;twilight&quot;)
+    return np.array([cmap(x)[:3] for x in np.linspace(0.08, 0.88, n)])
+
+
+def style_axes(ax):
+    ax.spines[&quot;top&quot;].set_visible(False)
+    ax.spines[&quot;right&quot;].set_visible(False)
+    ax.tick_params(direction=&quot;out&quot;, width=1.1, labelsize=8.5)
+    for spine in ax.spines.values():
+        spine.set_linewidth(1.1)
+
+
+def read_csv_matrix(path):
+    arr = np.genfromtxt(path, delimiter=&quot;,&quot;)
+    arr = np.asarray(arr, dtype=float)
+    if arr.ndim != 2 or arr.shape[0] != arr.shape[1]:
+        return None
+    arr[~np.isfinite(arr)] = 0
+    return arr
+
+
+def load_group_means(groups=GROUPS, n_nodes=None, tail_mode=False):
+    means, counts = {}, {}
+    for group in groups:
+        total, valid = None, 0
+        for path in sorted((BASE / &quot;data&quot; / group).glob(&quot;*.csv&quot;)):
+            mat = read_csv_matrix(path)
+            if mat is None:
+                continue
+            if n_nodes is not None:
+                if mat.shape[0] &lt; n_nodes:
+                    continue
+                mat = mat[-n_nodes:, -n_nodes:] if tail_mode else mat[:n_nodes, :n_nodes]
+            mat = np.log1p(np.maximum(mat, 0))
+            mat = 0.5 * (mat + mat.T)
+            np.fill_diagonal(mat, 0)
+            if total is None:
+                total = np.zeros_like(mat)
+            if total.shape == mat.shape:
+                total += mat
+                valid += 1
+        if valid == 0:
+            raise RuntimeError(f&quot;No valid CSV matrices for {group}&quot;)
+        mean = total / valid
+        if mean.max() &gt; 0:
+            mean = mean / mean.max()
+        np.fill_diagonal(mean, 0)
+        means[group] = mean
+        counts[group] = valid
+    return means, counts
+
+
+def shortest_unweighted(adj):
+    n = adj.shape[0]
+    dist = np.full((n, n), np.inf)
+    dist[adj &gt; 0] = 1
+    np.fill_diagonal(dist, 0)
+    for k in range(n):
+        dist = np.minimum(dist, dist[:, [k]] + dist[[k], :])
+    return dist
+
+
+def graph_metrics(w):
+    n = w.shape[0]
+    vals, vecs = np.linalg.eig(w)
+    eig = np.abs(vecs[:, np.argmax(vals.real)].real)
+    eig = eig / max(eig.max(), np.finfo(float).eps)</code></pre></details><details><summary>MATLAB circadian model</summary><pre><code>clear; clc; close all;
+
+baseDir = fileparts(mfilename(&#x27;fullpath&#x27;));
+figDir = fullfile(baseDir, &#x27;..&#x27;, &#x27;..&#x27;, &#x27;Report&#x27;, &#x27;Figs&#x27;);
+if ~exist(figDir, &#x27;dir&#x27;), mkdir(figDir); end
+
+make_fig15(figDir);
+make_fig16(figDir);
+make_fig17(figDir);
+
+fprintf(&#x27;Brain_circadian.m finished: Fig.15-17 are generated.\n&#x27;);
+
+function make_fig15(figDir)
+delta = 1.0;
+f = 3.5 * delta;
+omega = 1.4 * delta;
+regimes = [10.0, 4.5] * delta;
+regimeLabels = {&#x27;$K=10\Delta$&#x27;, &#x27;$K=4.5\Delta$&#x27;};
+shifts = [-8.5, -9.5, 9.0, 12.0];
+cols = twilight_colors(numel(shifts));
+fig = figure(&#x27;Color&#x27;, &#x27;w&#x27;, &#x27;Position&#x27;, [100 100 720 335]);
+tiledlayout(1, 2, &#x27;TileSpacing&#x27;, &#x27;compact&#x27;, &#x27;Padding&#x27;, &#x27;compact&#x27;);
+thetaCircle = linspace(0, 2*pi, 500);
+for r = 1:2
+    ax = nexttile; hold on;
+    k = regimes(r);
+    zst = stable_point_fast(k, f, delta, omega);
+    pts = fixed_points_all(k, f, delta, omega);
+    plot(cos(thetaCircle), sin(thetaCircle), &#x27;--&#x27;, &#x27;LineWidth&#x27;, 1.0, &#x27;Color&#x27;, [0.82 0.84 0.86]);
+    plot([-1 1], [0 0], &#x27;Color&#x27;, [0.82 0.84 0.86], &#x27;LineWidth&#x27;, 0.9);
+    plot([0 0], [-1 1], &#x27;Color&#x27;, [0.82 0.84 0.86], &#x27;LineWidth&#x27;, 0.9);
+    for rad = [0.25 0.55 0.85]
+        for ang = linspace(0, 2*pi, 18)
+            z0 = rad * exp(1i*ang);
+            [~, z] = trajectory(z0, 25, k, f, delta, omega, 1200, 0.035);
+            plot(real(z), imag(z), &#x27;Color&#x27;, [0.82 0.84 0.86], &#x27;LineWidth&#x27;, 0.55);
+        end
+    end
+    for s = 1:numel(shifts)
+        z0 = zst * exp(1i * shifts(s) * 2*pi/24);
+        [~, z] = trajectory(z0, 80, k, f, delta, omega, 2600, 0.035);
+        plot(real(z), imag(z), &#x27;LineWidth&#x27;, 1.5, &#x27;Color&#x27;, cols(s,:));
+        plot(real(z(1)), imag(z(1)), &#x27;o&#x27;, &#x27;MarkerSize&#x27;, 3.2, &#x27;MarkerFaceColor&#x27;, cols(s,:), &#x27;MarkerEdgeColor&#x27;, cols(s,:));
+    end
+    for p = 1:size(pts,1)
+        z = pts(p,1) + 1i*pts(p,2);
+        ev = eig(jacobian(z, k, f, delta, omega));
+        if all(real(ev) &lt; 0)
+            plot(real(z), imag(z), &#x27;p&#x27;, &#x27;MarkerSize&#x27;, 7, &#x27;MarkerFaceColor&#x27;, &#x27;k&#x27;, &#x27;MarkerEdgeColor&#x27;, &#x27;k&#x27;);
+        elseif all(real(ev) &gt; 0)
+            plot(real(z), imag(z), &#x27;o&#x27;, &#x27;MarkerSize&#x27;, 5, &#x27;MarkerFaceColor&#x27;, &#x27;w&#x27;, &#x27;MarkerEdgeColor&#x27;, &#x27;k&#x27;);
+        else
+            plot(real(z), imag(z), &#x27;+&#x27;, &#x27;MarkerSize&#x27;, 8, &#x27;LineWidth&#x27;, 1.5, &#x27;Color&#x27;, &#x27;k&#x27;);
+        end
+    end
+    text(-0.13, 1.04, char(&#x27;A&#x27;+r-1), &#x27;Units&#x27;, &#x27;normalized&#x27;, &#x27;FontName&#x27;, &#x27;Arial&#x27;, &#x27;FontSize&#x27;, 11);
+    text(0.05, 0.92, regimeLabels{r}, &#x27;Units&#x27;, &#x27;normalized&#x27;, &#x27;Interpreter&#x27;, &#x27;latex&#x27;, &#x27;FontName&#x27;, &#x27;Arial&#x27;, &#x27;FontSize&#x27;, 9);
+    axis equal; xlim([-1.02 1.02]); ylim([-1.02 1.02]);
+    xlabel(&#x27;$\operatorname{Re}(z)$&#x27;, &#x27;Interpreter&#x27;, &#x27;latex&#x27;);
+    if r == 1, ylabel(&#x27;$\operatorname{Im}(z)$&#x27;, &#x27;Interpreter&#x27;, &#x27;latex&#x27;); end
+    style_axes(ax);
+end
+exportgraphics(fig, fullfile(figDir, &#x27;15_circadian_phase_space_dynamics.png&#x27;), &#x27;Resolution&#x27;, 300, &#x27;BackgroundColor&#x27;, &#x27;w&#x27;);
+end
+
+function make_fig16(figDir)
+delta = 3.8e-3;
+k = 4.5 * delta; f = 3.5 * delta; omega = 1.4 * delta;
+zst = stable_point_fast(k, f, delta, omega);
+cases = [-3 -6 -9 12 3 6 9];
+labels = {&#x27;3 E&#x27;,&#x27;6 E&#x27;,&#x27;9 E&#x27;,&#x27;12 E/W&#x27;,&#x27;3 W&#x27;,&#x27;6 W&#x27;,&#x27;9 W&#x27;};
+styles = {&#x27;-&#x27;,&#x27;-&#x27;,&#x27;-&#x27;,&#x27;-&#x27;,&#x27;--&#x27;,&#x27;--&#x27;,&#x27;--&#x27;};
+cols = twilight_colors(4);
+caseCols = [cols(1,:); cols(2,:); cols(3,:); cols(4,:); cols(1,:); cols(2,:); cols(3,:)];
+fig = figure(&#x27;Color&#x27;, &#x27;w&#x27;, &#x27;Position&#x27;, [100 100 470 335]); hold on;
+for i = 1:numel(cases)
+    z0 = zst * exp(1i * cases(i) * 2*pi/24);
+    [t, z] = trajectory(z0, 14*24, k, f, delta, omega, 900, inf);
+    d = abs(z - zst);
+    stop = find(d &lt;= 0.2, 1, &#x27;first&#x27;);</code></pre></details><details><summary>Python circadian model</summary><pre><code>from pathlib import Path
+
+import matplotlib.pyplot as plt
+import numpy as np
+from scipy.integrate import solve_ivp
+from scipy.optimize import minimize
+
+
+BASE = Path(__file__).resolve().parent
+FIG_DIR = BASE.parent.parent / &quot;Report&quot; / &quot;Figs&quot;
+
+
+def twilight_colors(n):
+    cmap = plt.get_cmap(&quot;twilight&quot;)
+    return np.array([cmap(x)[:3] for x in np.linspace(0.08, 0.88, n)])
+
+
+def style_axes(ax):
+    ax.spines[&quot;top&quot;].set_visible(False)
+    ax.spines[&quot;right&quot;].set_visible(False)
+    ax.tick_params(direction=&quot;out&quot;, width=1.1, labelsize=8.5)
+    for spine in ax.spines.values():
+        spine.set_linewidth(1.1)
+
+
+def dzdt_complex(z, k, f, delta, omega):
+    return 0.5 * ((k * z + f) - z * z * (k * np.conj(z) + f)) - (delta + 1j * omega) * z
+
+
+def rhs_real(_, y, k, f, delta, omega):
+    z = y[0] + 1j * y[1]
+    dz = dzdt_complex(z, k, f, delta, omega)
+    return np.array([dz.real, dz.imag])
+
+
+def rhs_norm(y, k, f, delta, omega):
+    y = np.asarray(y)
+    if np.sum(y * y) &gt; 1.08:
+        return 1e3 + float(np.sum(y * y))
+    r = rhs_real(0, y, k, f, delta, omega)
+    return float(r @ r)
+
+
+def stable_point_fast(k, f, delta, omega):
+    starts = np.array([[0.5, 0], [0, 0], [-0.5, 0], [0, 0.5], [0, -0.5], [0.8, 0.2], [-0.2, 0.8]])
+    best, best_val = starts[0], np.inf
+    for start in starts:
+        res = minimize(lambda yy: rhs_norm(yy, k, f, delta, omega), start, method=&quot;Nelder-Mead&quot;, options={&quot;maxiter&quot;: 800, &quot;xatol&quot;: 1e-10, &quot;fatol&quot;: 1e-12})
+        val = rhs_norm(res.x, k, f, delta, omega)
+        if np.linalg.norm(res.x) &lt;= 1.02 and val &lt; best_val:
+            best, best_val = res.x, val
+    return best[0] + 1j * best[1]
+
+
+def fixed_points_all(k, f, delta, omega):
+    pts = []
+    grid = np.linspace(-0.92, 0.92, 11)
+    for x in grid:
+        for y in grid:
+            if x * x + y * y &gt; 1:
+                continue
+            res = minimize(lambda yy: rhs_norm(yy, k, f, delta, omega), [x, y], method=&quot;Nelder-Mead&quot;, options={&quot;maxiter&quot;: 600, &quot;xatol&quot;: 1e-10, &quot;fatol&quot;: 1e-12})
+            p = res.x
+            if np.linalg.norm(p) &lt;= 1.02 and rhs_norm(p, k, f, delta, omega) &lt; 1e-9:
+                if not pts or np.all(np.linalg.norm(np.asarray(pts) - p, axis=1) &gt; 1e-4):
+                    pts.append(p)
+    if not pts:
+        z = stable_point_fast(k, f, delta, omega)
+        pts.append([z.real, z.imag])
+    return np.asarray(pts)
+
+
+def jacobian(z, k, f, delta, omega):
+    eps = 1e-5
+    y = np.array([z.real, z.imag])
+    mat = np.zeros((2, 2))
+    for i in range(2):
+        e = np.zeros(2)
+        e[i] = eps
+        mat[:, i] = (rhs_real(0, y + e, k, f, delta, omega) - rhs_real(0, y - e, k, f, delta, omega)) / (2 * eps)</code></pre></details></section></main><script src="app.js"></script></body></html>

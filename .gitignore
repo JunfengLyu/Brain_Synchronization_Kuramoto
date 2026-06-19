@@ -1,8 +1,11 @@
 .DS_Store
 __pycache__/
 *.pyc
+.venv/
 .idea/
-docs_page_preview.png
-MatLab_codes/
-Presentation/
+*.zip
 Arduino_Kuramoto/
+Presentation/
+Report/*.pdf
+Report/*.tex
+Report/Figs/*.pptx

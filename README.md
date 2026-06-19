@@ -1,119 +1,40 @@
-# Brain Synchronization with the Kuramoto Model
+# Modeling the Emergent Synchronization of Brain Networks with Kuramoto Model
 
-This repository contains the code, figures, data, and interactive project page for a course project on emergent synchronization in brain networks. The project starts from the classical Kuramoto model, extends it to heterogeneous network coupling, and then applies the framework to empirical brain connectomes, Alzheimer's disease progression, and circadian resynchronization.
+Final project for MMLS 2026 spring, PKU, taught by Prof. Tao and Prof. Champer.
 
-The online companion page is served through GitHub Pages from `docs/`.
+## Headpic
 
-## Project Structure
+| Synchronization phenomena | AAL connectome construction |
+| --- | --- |
+| ![Fig01](Report/Figs/01_Sync_history.png) | ![Fig06](Report/Figs/06_aal_connectome_construction.png) |
+| Historical and biological examples of synchronization, from coupled clocks to burst flashing. | Construction of the empirical AAL-90 structural connectome and identification of high-degree hubs. |
 
-The main reproducible entry points are kept in the repository root:
+## Abstract
 
-- `01_Kuramoto_demo.py` / `01_Kuramoto_demo.m`: classical Kuramoto dynamics, order parameter, mean-field bifurcation, and heterogeneous network topology comparison.
-- `02_Brain_Kuramoto.py` / `02_Brain_Kuramoto.m`: AAL connectome construction, whole-brain synchronization, hub perturbation, and Alzheimer's disease continuum simulations.
-- `03_Circadian_clock.py` / `03_Circadian_clock.m`: forced Kuramoto/Ott-Antonsen circadian resynchronization analysis.
-- `data_for_section3&4/`: AAL and ADNI-derived structural connectivity datasets used by the brain-connectome and AD sections.
-- `Report/Figs/`: final report figures saved as 300 dpi PNG files.
-- `docs/`: interactive GitHub Pages site with paper text, figures, browser demos, and minimal code snippets.
+Synchronization is a universal phenomenon observed in systems ranging from firefly swarms to circadian clocks and neuronal populations. In the brain, synchronized neural activity plays a crucial role in information processing, cognition, and behavior, while abnormal synchronization is associated with neurological disorders. Here, we investigate the emergence of large-scale brain synchronization using the Kuramoto model on a structural connectome derived from the Automated Anatomical Labeling (AAL) atlas. Based on it, we construct a dynamical model and reproduce the collective synchronization, demonstrating that the phenomenon is strictly governed by the coupling parameter. Building on this physical baseline, we systematically investigate the topological drivers of the system, revealing the disproportionate role of network hubs in facilitating global phase transitions and evaluating the network's dynamical vulnerability to localized structural perturbations. We further extend this framework to circadian resynchronization, using a forced Kuramoto model to illustrate how coupled neural oscillators recover coherence after abrupt time-zone phase shifts. Finally, we translate these theoretical insights into a clinical context by comparing empirical connectome data from Alzheimer's disease patients and healthy controls elucidating the clinical significance of disrupted synchronization dynamics.
 
-The original section-level scripts remain in `Code/` for traceability. The root scripts are the recommended interfaces for reproducing the report figures.
+## Code Availability and Annotations
 
-## Core Models
+MATLAB and Python files with the same name implement the same analysis or visualization logic.
 
-### Classical Kuramoto Model
+| Path | Summary |
+| --- | --- |
+| `Code/Kuramoto_demo/Kuramoto_rotor.m` / `.py` | Interactive-style Kuramoto rotor demonstration showing oscillator phases, order parameter dynamics, and burst activity. |
+| `Code/Kuramoto_demo/Kuramoto_transition.m` / `.py` | Mean-field transition and finite-size simulation of the classical Kuramoto synchronization bifurcation. |
+| `Code/Kuramoto_demo/Kuramoto_network_topology.m` / `.py` | Comparison of synchronization thresholds on global, Erdős-Rényi, and Barabási-Albert network topologies. |
+| `Code/Brain_Kuramoto/Brain_connectome.m` / `.py` | Construction and visualization of the AAL-90 group consensus structural connectome and hub degree distribution. |
+| `Code/Brain_Kuramoto/Brain_sync.m` / `.py` | Brain-network synchronization parameter scans, module and hub synchronization analysis, and focal perturbation entrainment figures. |
+| `Code/Brain_Kuramoto/Brain_disease.m` / `.py` | Alzheimer's disease continuum analysis using empirical connectome matrices, topological lesion regression, and perturbation-rescue simulation. |
+| `Code/Brain_Kuramoto/Brain_circadian.m` / `.py` | Forced Kuramoto/Ott-Antonsen circadian resynchronization model for jet-lag recovery dynamics. |
+| `Code/Brain_Kuramoto/data/rawdata.mat` | Multi-subject AAL-90 structural connectivity tensor used to build the healthy group consensus connectome. |
+| `Code/Brain_Kuramoto/data/CN/*.csv` | Cognitively normal ADNI structural connectivity matrices. |
+| `Code/Brain_Kuramoto/data/EMCI/*.csv` | Early mild cognitive impairment ADNI structural connectivity matrices. |
+| `Code/Brain_Kuramoto/data/LMCI/*.csv` | Late mild cognitive impairment ADNI structural connectivity matrices. |
+| `Code/Brain_Kuramoto/data/AD/*.csv` | Alzheimer's disease ADNI structural connectivity matrices. |
+| `Report/Figs/*.png` | Final report figures generated from the project scripts and preserved for the online page and manuscript. |
 
-For `N` coupled oscillators, the phase dynamics are
+## Extensive Online Page
 
-```text
-d theta_i / dt = omega_i + (K / N) sum_j sin(theta_j - theta_i).
-```
+[https://junfenglyu.github.io/Brain_Synchronization_Kuramoto/](https://junfenglyu.github.io/Brain_Synchronization_Kuramoto/)
 
-The complex order parameter is
-
-```text
-z(t) = (1 / N) sum_j exp(i theta_j) = R(t) exp(i Theta(t)),
-```
-
-where `R(t)` measures the population synchronization level.
-
-Under the mean-field approximation and the rotating coordinate `phi_i = theta_i - omega_bar t`, the reduced one-dimensional equation is
-
-```text
-d phi_i / dt = nu_i - K R sin(phi_i).
-```
-
-Locked oscillators satisfy `|nu_i| <= K R`, and the Gaussian mean-field critical coupling is
-
-```text
-K_c = 2 / (pi g(omega_bar)).
-```
-
-### Heterogeneous Networks
-
-To model topology-dependent synchronization, homogeneous all-to-all coupling is replaced by a network adjacency matrix:
-
-```text
-d theta_i / dt = omega_i + (1 / N) sum_j K_ij sin(theta_j - theta_i).
-```
-
-The project compares global coupling, Erdős-Rényi random graphs, and Barabási-Albert scale-free networks. Scale-free topology synchronizes at lower coupling because hub nodes relay phase information more efficiently.
-
-### AAL Brain Connectome
-
-Brain regions from the AAL-90 atlas are modeled as oscillators connected by an empirical structural matrix `M_group`. The stochastic whole-brain Kuramoto equation is
-
-```text
-d theta_i = omega_i dt + lambda sum_j M_ij sin(theta_j - theta_i) dt + sigma dW_i.
-```
-
-This model is used to examine macroscopic synchrony, edge synchronization, modular locking, and the topological role of central hubs.
-
-### Alzheimer's Disease Continuum
-
-Group-average structural connectomes are constructed for CN, EMCI, LMCI, and AD cohorts. The same Kuramoto dynamics are simulated across disease stages to test whether structural degradation delays the transition to global synchronization. The perturbation-rescue experiment replaces selected AD network edges with CN-like edges to compare targeted hub repair against random repair.
-
-### Circadian Resynchronization
-
-The circadian section uses a forced Kuramoto model of SCN oscillators:
-
-```text
-d theta_i / dt = omega_i + (K / N) sum_j sin(theta_j - theta_i)
-                 + F sin(sigma t - theta_i + p(t)).
-```
-
-Assuming a Lorentzian frequency distribution, the Ott-Antonsen reduction yields a macroscopic complex order-parameter equation:
-
-```text
-dot z = 1/2 [(K z + F) - z^2 (K conj(z) + F)] - (Delta + i Omega) z.
-```
-
-The reduced phase portrait explains east-west jet-lag asymmetry through the geometry of stable fixed points, saddles, and separatrices.
-
-## Reproducing Figures
-
-Run the Python versions from the repository root:
-
-```bash
-python3 01_Kuramoto_demo.py
-python3 02_Brain_Kuramoto.py
-python3 03_Circadian_clock.py
-```
-
-Or run the MATLAB versions from the repository root:
-
-```matlab
-run("01_Kuramoto_demo.m")
-run("02_Brain_Kuramoto.m")
-run("03_Circadian_clock.m")
-```
-
-Generated figures are saved to `Report/Figs/`.
-
-## Interactive Page
-
-The GitHub Pages site in `docs/` includes:
-
-- Paper-style sections for Introduction, Kuramoto review, AAL connectome, brain synchronization, AD analysis, and circadian resynchronization.
-- All report figures.
-- Browser-based Kuramoto demos for oscillator phases and transition/bifurcation exploration.
-- Minimal MATLAB/Python code blocks corresponding to the root scripts.
-
+The online page contains the report text, final figures, hoverable/clickable references, and minimal MATLAB/Python code blocks for the main model components.
