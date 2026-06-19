@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Brain Synchronization with the Kuramoto Model</title>
+    <link rel="stylesheet" href="styles.css">
+    <script>
+      window.MathJax = {
+        tex: { inlineMath: [["$", "$"], ["\\(", "\\)"]], displayMath: [["$$", "$$"], ["\\[", "\\]"]] },
+        svg: { fontCache: "global" }
+      };
+    </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  </head>
+  <body>
+    <aside class="sidebar">
+      <div class="brand">
+        <p>Interactive Project Page</p>
+        <h1>Brain Synchronization<br>with Kuramoto Model</h1>
+      </div>
+      <nav aria-label="Sections">
+        <a class="nav-link active" href="#abstract">Abstract</a>
+        <a class="nav-link" href="#introduction">Introduction</a>
+        <a class="nav-link" href="#kuramoto">Kuramoto Review</a>
+        <a class="nav-link" href="#connectome">AAL Connectome</a>
+        <a class="nav-link" href="#brain-sync">Brain Synchronization</a>
+        <a class="nav-link" href="#ad">Alzheimer's Disease</a>
+        <a class="nav-link" href="#circadian">Circadian Clock</a>
+        <a class="nav-link" href="#code">Code</a>
+      </nav>
+    </aside>
+
+    <main class="paper">
+      <section class="hero" id="abstract">
+        <p class="eyebrow">Complex systems · nonlinear dynamics · brain networks</p>
+        <h2>Modeling the Emergent Synchronization of Brain Networks</h2>
+        <p>
+          Synchronization is a universal phenomenon observed in systems ranging from
+          firefly swarms to circadian clocks and neuronal populations. Here we investigate
+          large-scale brain synchronization using the Kuramoto model on structural
+          connectomes derived from the AAL atlas and ADNI-related cohorts.
+        </p>
+        <p>
+          The project connects mean-field Kuramoto theory, network topology, empirical
+          brain connectomes, Alzheimer's disease progression, and circadian
+          resynchronization. The page below combines the report text, final figures,
+          browser simulations, and minimal reproducible code.
+        </p>
+      </section>
+
+      <section id="introduction" class="content-section">
+        <h2>Introduction to Synchronization Phenomenon</h2>
+        <p>
+          Synchronization describes the tendency of interacting oscillators to coordinate
+          rhythms to a global frequency and phase. Its scientific study can be traced to
+          Huygens' 17th-century observation of coupled pendulums and now spans physical,
+          chemical, and biological systems.
+        </p>
+        <p>
+          Biological synchronization appears across scales: firefly swarms generate
+          synchronized flashes, cardiac tissue contracts coherently, neural populations
+          produce collective rhythms, and molecular circadian clocks maintain robust
+          daily cycles. Brain synchronization is especially important because coordinated
+          activity may support communication, perception, and attention, while abnormal
+          synchronization is linked to neurological disorders.
+        </p>
+        <figure>
+          <img src="assets/01_Sync_history.png" alt="History and examples of synchronization">
+          <figcaption><strong>Figure 1.</strong> Historical and biological examples of synchronization.</figcaption>
+        </figure>
+      </section>
+
+      <section id="kuramoto" class="content-section">
+        <h2>Review on Kuramoto Model</h2>
+        <p>
+          For $N$ oscillators with phases $\theta_i$, the classical Kuramoto model is
+        </p>
+        $$
+        \frac{d\theta_i}{dt}=\omega_i+\frac{K}{N}\sum_{j=1}^{N}\sin(\theta_j-\theta_i).
+        $$
+        <p>
+          Collective synchronization is described by the complex order parameter
+        </p>
+        $$
+        \tilde z(t)=\frac{1}{N}\sum_{j=1}^{N}e^{i\theta_j(t)}=R(t)e^{i\Theta(t)}.
+        $$
+        <p>
+          The magnitude $R(t)$ measures coherence: $R\to0$ indicates incoherence, while
+          $R\to1$ indicates phase locking.
+        </p>
+        <figure>
+          <img src="assets/02_order_parameter_schematic.png" alt="Order parameter schematic">
+          <figcaption><strong>Figure 2.</strong> Static schematic of the order parameter under weak and strong coupling.</figcaption>
+        </figure>
+        <p>
+          In the rotating frame $\phi_i=\theta_i-\bar\omega t$, mean-field theory gives
+        </p>
+        $$
+        \frac{d\phi_i}{dt}=\nu_i-KR\sin\phi_i.
+        $$
+        <p>
+          Fixed points exist when $|\nu_i|\le KR$, explaining how the synchronized
+          subgroup emerges as coupling increases.
+        </p>
+        <figure>
+          <img src="assets/03_phase_diagram.png" alt="Mean-field phase diagram">
+          <figcaption><strong>Figure 3.</strong> Fixed-point loss in the reduced mean-field phase equation.</figcaption>
+        </figure>
+        <p>
+          For a Gaussian frequency distribution, the self-consistency equation produces
+          the critical coupling
+        </p>
+        $$
+        K_c=\frac{2}{\pi g(\bar\omega)},\qquad R^*\sim(K-K_c)^{1/2}.
+        $$
+        <figure>
+          <img src="assets/04_mean_field_bifurcation.png" alt="Mean-field bifurcation">
+          <figcaption><strong>Figure 4.</strong> Mean-field bifurcation and finite-size simulation comparison.</figcaption>
+        </figure>
+        <p>
+          Heterogeneous network coupling replaces the all-to-all interaction with a
+          connection matrix:
+        </p>
+        $$
+        \frac{d\theta_i}{dt}=\omega_i+\frac{1}{N}\sum_{j=1}^{N}K_{ij}\sin(\theta_j-\theta_i).
+        $$
+        <p>
+          Global, Erdős-Rényi, and Barabási-Albert networks reveal how hubs reduce the
+          coupling threshold for synchronization.
+        </p>
+        <figure>
+          <img src="assets/05_network_topology_transition.png" alt="Topology transition">
+          <figcaption><strong>Figure 5.</strong> Synchronization transition under global, ER random, and BA scale-free topologies.</figcaption>
+        </figure>
+
+        <h3>Interactive Kuramoto Demos</h3>
+        <p>
+          These browser simulations mirror the MATLAB demos: the first shows oscillator
+          phases, mean-field prediction, simulation point, and burst-like spike events;
+          the second scans finite-size transition curves.
+        </p>
+
+        <div class="code-card">
+          <div class="code-tabs" aria-label="Code language tabs">
+            <button class="code-tab active" data-code="matlab">MATLAB</button>
+            <button class="code-tab" data-code="python">Python</button>
+          </div>
+          <pre class="code-block active" data-code-panel="matlab"><code>z = mean(exp(1i * theta));
+R = abs(z);
+Psi = angle(z);
+dtheta = omega + K * R * sin(Psi - theta);
+theta = theta + dt * dtheta;</code></pre>
+          <pre class="code-block" data-code-panel="python"><code>z = np.mean(np.exp(1j * theta))
+R = np.abs(z)
+Psi = np.angle(z)
+dtheta = omega + K * R * np.sin(Psi - theta)
+theta = theta + dt * dtheta</code></pre>
+        </div>
+
+        <div class="interactive-grid">
+          <article class="demo-card">
+            <div class="demo-header">
+              <h4>Live Kuramoto Lab</h4>
+              <p>Oscillator circle, MF prediction, simulation point, and burst spikes.</p>
+            </div>
+            <div class="controls compact">
+              <label>N <output id="live-n-value">64</output><input id="live-n" type="range" min="16" max="128" step="16" value="64"></label>
+              <label>$\sigma$ <output id="live-sigma-value">0.50</output><input id="live-sigma" type="range" min="0.05" max="0.80" step="0.01" value="0.50"></label>
+              <label>K <output id="live-k-value">1.20</output><input id="live-k" type="range" min="0" max="2.0" step="0.01" value="1.20"></label>
+              <label>speed <output id="live-speed-value">1.0x</output><input id="live-speed" type="range" min="0.2" max="2.4" step="0.1" value="1.0"></label>
+            </div>
+            <div class="button-row">
+              <button id="live-reset">Reset</button>
+              <button id="live-pause">Pause</button>
+              <span>R = <strong id="live-r">0.000</strong></span>
+            </div>
+            <canvas id="phase-canvas" width="520" height="360"></canvas>
+            <canvas id="diagram-canvas" width="520" height="300"></canvas>
+            <canvas id="raster-canvas" width="520" height="220"></canvas>
+          </article>
+
+          <article class="demo-card">
+            <div class="demo-header">
+              <h4>Finite-Size Transition Sweep</h4>
+              <p>Mean-field prediction versus simulations under different N.</p>
+            </div>
+            <div class="controls compact">
+              <label>$\sigma$ <output id="sweep-sigma-value">0.50</output><input id="sweep-sigma" type="range" min="0.10" max="0.80" step="0.05" value="0.50"></label>
+              <label>K max <output id="sweep-kmax-value">2.00</output><input id="sweep-kmax" type="range" min="1.0" max="2.5" step="0.1" value="2.0"></label>
+              <label>points <output id="sweep-points-value">31</output><input id="sweep-points" type="range" min="21" max="51" step="10" value="31"></label>
+            </div>
+            <fieldset class="checks">
+              <legend>N</legend>
+              <label><input class="sweep-n" type="checkbox" value="10" checked>10</label>
+              <label><input class="sweep-n" type="checkbox" value="100" checked>100</label>
+              <label><input class="sweep-n" type="checkbox" value="1000" checked>1000</label>
+              <label><input class="sweep-n" type="checkbox" value="10000">10000</label>
+            </fieldset>
+            <div class="button-row">
+              <button id="run-sweep">Run sweep</button>
+              <button id="cancel-sweep" disabled>Cancel</button>
+              <span id="sweep-status">Ready.</span>
+            </div>
+            <div class="progress"><span id="sweep-progress"></span></div>
+            <canvas id="transition-canvas" width="640" height="460"></canvas>
+          </article>
+        </div>
+      </section>
+
+      <section id="connectome" class="content-section">
+        <h2>Connection Architecture Based on the AAL Atlas Connectome</h2>
+        <p>
+          The empirical brain network uses the AAL-90 atlas, where each macroscopic brain
+          region is modeled as an oscillator. Subject-level structural matrices are
+          symmetrized, self-connections are removed, and a 40% population consensus rule
+          retains edges present across a sufficient fraction of subjects.
+        </p>
+        <p>
+          Node degree is used to identify structural super hubs above the 85th percentile.
+          These hubs become the targets for later perturbation and rescue experiments.
+        </p>
+        <figure>
+          <img src="assets/06_aal_connectome_construction.png" alt="AAL connectome construction">
+          <figcaption><strong>Figure 6.</strong> AAL-90 consensus matrix and hub degree distribution.</figcaption>
+        </figure>
+      </section>
+
+      <section id="brain-sync" class="content-section">
+        <h2>Modeling Synchronization of Brain Networks</h2>
+        <p>
+          The AAL network is injected into a stochastic Kuramoto equation:
+        </p>
+        $$
+        d\theta_i=\omega_i\,dt+\lambda\sum_{j=1}^{N}M_{ij}\sin(\theta_j-\theta_i)\,dt+\sigma\,dW_i.
+        $$
+        <p>
+          The global order parameter $R$ and edge synchronization $R_{link}$ quantify
+          macroscopic coherence and structural-edge phase locking.
+        </p>
+        <div class="figure-grid">
+          <figure>
+            <img src="assets/07_macroscopic_synchronization_dynamics.png" alt="Macroscopic synchronization">
+            <figcaption><strong>Figure 7.</strong> Robust, middle, and unstable macroscopic synchronization states.</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/08_lambda_dependent_synchronization_states.png" alt="Lambda dependent states">
+            <figcaption><strong>Figure 8.</strong> Coupling-dependent transition and representative functional-connectivity heatmaps.</figcaption>
+          </figure>
+        </div>
+        <p>
+          Module-wise simulations show that local synchronization emerges before global
+          coherence. The top structural hubs lock earlier than regular modules and act as
+          a dynamical anchor for whole-brain integration.
+        </p>
+        <figure>
+          <img src="assets/09_modules_and_hubs_synchronization.png" alt="Modules and hubs">
+          <figcaption><strong>Figure 9.</strong> Mesoscale synchronization of anatomical modules and hubs.</figcaption>
+        </figure>
+        <p>
+          Targeted frequency perturbation experiments compare hub nodes, random peripheral
+          nodes, and the frontal module. Hubs entrain the rest of the network at the lowest
+          critical coupling, demonstrating strong topological leverage.
+        </p>
+        <figure>
+          <img src="assets/10_focal_perturbation_frequency_entrainment.png" alt="Focal perturbation">
+          <figcaption><strong>Figure 10.</strong> Whole-brain frequency entrainment under focal dynamical perturbations.</figcaption>
+        </figure>
+      </section>
+
+      <section id="ad" class="content-section">
+        <h2>Alzheimer's Disease Continuum</h2>
+        <p>
+          Group-average structural connectomes are built for CN, EMCI, LMCI, and AD
+          cohorts. Topological regression tests whether regions with high centrality,
+          clustering, local efficiency, or participation coefficient are preferentially
+          affected by structural degradation.
+        </p>
+        <div class="figure-grid">
+          <figure>
+            <img src="assets/11_ad_connectome_evolution.png" alt="AD connectome evolution">
+            <figcaption><strong>Figure 11.</strong> Structural connectome evolution across the AD continuum.</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/12_topological_lesion_regression.png" alt="Lesion regression">
+            <figcaption><strong>Figure 12.</strong> Regression between baseline topology and lesion burden.</figcaption>
+          </figure>
+        </div>
+        <p>
+          Kuramoto simulations show a subtle but consistent rightward shift of the phase
+          transition along disease progression. The AD network requires elevated coupling
+          to reach comparable global coherence.
+        </p>
+        <div class="figure-grid">
+          <figure>
+            <img src="assets/13_ad_phase_transition_delay.png" alt="AD transition delay">
+            <figcaption><strong>Figure 13.</strong> Stage-dependent synchronization delay across the AD continuum.</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/14_perturbation_rescue_experiment.png" alt="Perturbation rescue">
+            <figcaption><strong>Figure 14.</strong> In silico targeted versus random perturbation-rescue experiment.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section id="circadian" class="content-section">
+        <h2>Resynchronization Dynamics of Circadian Brain Oscillators</h2>
+        <p>
+          A forced Kuramoto model describes SCN circadian oscillators under external
+          light-dark forcing:
+        </p>
+        $$
+        \frac{d\theta_i}{dt}=\omega_i+\frac{K}{N}\sum_j\sin(\theta_j-\theta_i)+F\sin(\sigma t-\theta_i+p(t)).
+        $$
+        <p>
+          With a Lorentzian frequency distribution, the Ott-Antonsen reduction yields
+        </p>
+        $$
+        \dot{\tilde z}=\frac{1}{2}[(K\tilde z+F)-\tilde z^2(K\bar{\tilde z}+F)]-(\Delta+i\Omega)\tilde z.
+        $$
+        <p>
+          Phase-space geometry explains east-west jet-lag asymmetry: saddle structures
+          and separatrices can prolong recovery for specific phase advances.
+        </p>
+        <div class="figure-grid">
+          <figure>
+            <img src="assets/15_circadian_phase_space_dynamics.png" alt="Circadian phase portrait">
+            <figcaption><strong>Figure 15.</strong> Phase-space dynamics of forced Kuramoto circadian oscillators.</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/16_circadian_recovery_trajectories.png" alt="Circadian recovery">
+            <figcaption><strong>Figure 16.</strong> Recovery trajectories after eastward and westward shifts.</figcaption>
+          </figure>
+        </div>
+        <figure>
+          <img src="assets/17_circadian_parameter_dependence.png" alt="Circadian parameter dependence">
+          <figcaption><strong>Figure 17.</strong> Recovery-time dependence on coupling, forcing, and frequency mismatch.</figcaption>
+        </figure>
+      </section>
+
+      <section id="code" class="content-section">
+        <h2>Reproducible Code</h2>
+        <p>
+          The root scripts reproduce the report figures while preserving the section-level
+          source code for traceability.
+        </p>
+        <div class="snippet-grid">
+          <pre><code>python3 01_Kuramoto_demo.py
+python3 02_Brain_Kuramoto.py
+python3 03_Circadian_clock.py</code></pre>
+          <pre><code>run("01_Kuramoto_demo.m")
+run("02_Brain_Kuramoto.m")
+run("03_Circadian_clock.m")</code></pre>
+        </div>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
